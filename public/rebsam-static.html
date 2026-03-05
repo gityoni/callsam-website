@@ -1412,7 +1412,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
               </svg>
-              <a href="mailto:rebbesam@callsam.net">rebbesam@callsam.net</a>
+              <a href="/cdn-cgi/l/email-protection#483a2d2a2a2d3b2925082b2924243b292566262d3c"><span class="__cf_email__" data-cfemail="98eafdfafafdebf9f5d8fbf9f4f4ebf9f5b6f6fdec">[email&#160;protected]</span></a>
             </div>
           </li>
           <li>
@@ -1519,7 +1519,7 @@
 <!-- ══════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   /* ── Sources list ─────────────────────────────────────── */
   var ALL_SOURCES = [
     "Choulhan Aroukh (Maran Rabbi Yossef Karo) et le Tour",
@@ -1704,6 +1704,41 @@
     return bubble; // return bubble ref to replace later
   }
 
+
+  /* ── Markdown → HTML ─────────────────────────────────────── */
+  function parseMarkdown(text) {
+    var lines = text.split("\n");
+    var html = "";
+    var inUl = false, inOl = false;
+    function closeLists() {
+      if (inUl) { html += "</ul>"; inUl = false; }
+      if (inOl) { html += "</ol>"; inOl = false; }
+    }
+    function inline(s) {
+      return s
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/__(.*?)__/g, "<b>$1</b>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/_(.*?)_/g, "<em>$1</em>")
+        .replace(/`([^`]+)`/g, '<code style="background:rgba(0,86,210,0.08);padding:1px 5px;border-radius:4px;font-size:0.85em;">$1</code>');
+    }
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].replace(/\s+$/, "");
+      if (/^### /.test(line)) { closeLists(); html += '<h3 style="font-weight:700;font-size:0.92rem;margin:0.7rem 0 0.25rem;color:#0056D2;">' + inline(line.slice(4)) + "</h3>"; continue; }
+      if (/^## /.test(line))  { closeLists(); html += '<h2 style="font-weight:800;font-size:1rem;margin:0.8rem 0 0.3rem;color:#0056D2;">'   + inline(line.slice(3)) + "</h2>"; continue; }
+      if (/^# /.test(line))   { closeLists(); html += '<h1 style="font-weight:900;font-size:1.1rem;margin:0.9rem 0 0.35rem;color:#0056D2;">' + inline(line.slice(2)) + "</h1>"; continue; }
+      if (/^---+$/.test(line)) { closeLists(); html += '<hr style="border:none;border-top:1px solid #e5e7eb;margin:0.5rem 0;">'; continue; }
+      var ulM = line.match(/^[-*•]\s+(.*)/);
+      if (ulM) { if (inOl) { html += "</ol>"; inOl = false; } if (!inUl) { html += '<ul style="padding-left:1.2rem;margin:0.3rem 0;">'; inUl = true; } html += '<li style="margin-bottom:0.2rem;">' + inline(ulM[1]) + "</li>"; continue; }
+      var olM = line.match(/^\d+\.\s+(.*)/);
+      if (olM) { if (inUl) { html += "</ul>"; inUl = false; } if (!inOl) { html += '<ol style="padding-left:1.2rem;margin:0.3rem 0;">'; inOl = true; } html += '<li style="margin-bottom:0.2rem;">' + inline(olM[1]) + "</li>"; continue; }
+      if (line.trim() === "") { closeLists(); html += "<br>"; continue; }
+      closeLists();
+      html += '<span style="display:block;margin-bottom:0.25rem;">' + inline(line) + "</span>";
+    }
+    closeLists();
+    return html.replace(/(<br>){2,}/g, "<br>");
+  }
   async function sendMessage() {
     var inputEl = document.getElementById('chat-input');
     var sendBtn = document.getElementById('chat-send');
@@ -1725,13 +1760,11 @@
       );
       var texteReponse = await response.text();
 
-      // Nettoyer les astérisques Markdown
-      var texteNettoye = texteReponse
-        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-        .replace(/\*(.*?)\*/g, '$1');
+      // Convertir Markdown → HTML
+      var texteNettoye = parseMarkdown(texteReponse);
 
       loadingBubble.innerHTML = texteNettoye;
-      loadingBubble.style.whiteSpace = 'pre-line';
+      loadingBubble.style.whiteSpace = 'normal';
 
     } catch (err) {
       loadingBubble.innerHTML = "Désolé, une erreur s'est produite. Réessayez ou passez par <a href='https://wa.me/15551790835?text=Chalom%20Rebbe%20Sam%2C%20j%27ai%20une%20question' target='_blank' style='color:#0056D2;text-decoration:underline;'>WhatsApp</a>.";
@@ -1756,15 +1789,3 @@
     link.addEventListener('click', function(e) {
       var href = this.getAttribute('href');
       if (href === '#') return;
-      var target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        closeMobileMenu();
-      }
-    });
-  });
-</script>
-
-</body>
-</html>
