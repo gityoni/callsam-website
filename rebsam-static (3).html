@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RebSam — Un Rebbe dans votre dose d'IA quotidienne</title>
+  <meta name="description" content="RebSam : votre expert en Halacha, disponible 24h/24. Posez vos questions en hébreu, français ou anglais. Réponses avec les sources exactes — en quelques secondes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #2D3748; background: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    [lang="he"], [dir="rtl"] { font-family: 'Assistant', 'Inter', sans-serif; }
+    :root {
+      --primary: #0056D2; --primary-dark: #003E99; --primary-light: #3B82F6;
+      --secondary: #2D3748; --secondary-light: #4A5568; --secondary-dark: #1A202C;
+      --coral: #FF7F50; --bg: #ffffff; --bg-soft: #F8F9FA;
+      --radius-xl: 1.25rem; --radius-2xl: 1.5rem; --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08); --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,.12); --shadow-2xl: 0 25px 60px rgba(0,0,0,.18);
+    }
+    .font-logo { font-family: 'Outfit', sans-serif; }
+    h1,h2,h3,h4 { line-height: 1.2; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* HEADER */
+    #header { position: fixed; top: 0; left: 0; right: 0; z-index: 500; padding: 1.25rem 0; transition: background .3s, box-shadow .3s, padding .3s; }
+    #header.scrolled { background: rgba(255,255,255,.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--shadow-sm); padding: .75rem 0; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .logo { font-family: 'Outfit', sans-serif; font-size: 1.875rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
+    .logo .reb { color: var(--primary); }
+    .logo .sam { color: var(--secondary-dark); }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: .875rem; font-weight: 500; color: var(--secondary); position: relative; padding-bottom: 4px; transition: color .25s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary); transition: width .3s; }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .lang-switcher { display: flex; gap: .35rem; align-items: center; }
+    .lang-btn { padding: .25rem .6rem; border-radius: .375rem; font-size: .8rem; font-weight: 600; cursor: pointer; border: 1.5px solid transparent; transition: all .2s; background: none; color: var(--secondary-light); font-family: 'Inter', sans-serif; }
+    .lang-btn:hover { color: var(--primary); border-color: rgba(0,86,210,.3); }
+    .lang-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .nav-cta { display: inline-flex; align-items: center; gap: .4rem; background: var(--primary); color: #fff; padding: .5rem 1.25rem; border-radius: var(--radius-full); font-size: .875rem; font-weight: 600; transition: background .25s, transform .2s; white-space: nowrap; }
+    .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .nav-right { display: flex; align-items: center; gap: .75rem; }
+    #hamburger { display: none; background: none; border: none; cursor: pointer; padding: .5rem; color: var(--secondary); }
+    #mobile-menu { display: none; position: fixed; inset: 0; z-index: 400; background: #fff; padding: 6rem 2rem 2rem; flex-direction: column; gap: 2rem; }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a { font-size: 1.25rem; font-weight: 500; color: var(--secondary); transition: color .25s; }
+    #mobile-menu a:hover { color: var(--primary); }
+    .btn-primary-mobile { display: block; text-align: center; background: var(--primary); color: #fff !important; padding: .875rem 1.5rem; border-radius: var(--radius-full); font-weight: 600; font-size: 1.125rem; }
+    .mobile-lang { display: flex; gap: .5rem; }
+    @media (max-width: 900px) { .nav-links { display: none; } .nav-cta { display: none; } .lang-switcher { display: none; } #hamburger { display: block; } }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: 1rem 2rem; border-radius: var(--radius-full); font-weight: 600; font-size: 1.0625rem; cursor: pointer; transition: all .25s; border: none; font-family: 'Inter', sans-serif; white-space: nowrap; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; box-shadow: 0 4px 20px rgba(0,86,210,.35); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,86,210,.45); }
+    .btn-ghost { background: transparent; color: var(--secondary); border: 1.5px solid rgba(45,55,72,.2); }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); background: rgba(0,86,210,.04); }
+
+    /* HERO */
+    #hero { position: relative; padding: 10rem 0 8rem; overflow: hidden; }
+    @media (max-width: 767px) { #hero { padding: 7rem 0 5rem; } }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,182,193,.15) 0%, rgba(219,234,254,.12) 50%, rgba(207,250,254,.15) 100%); z-index: -2; overflow: hidden; }
+    .halo { position: absolute; border-radius: 50%; filter: blur(80px); }
+    .halo-1 { top: -15%; right: -10%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,127,80,.10) 0%, rgba(252,231,243,.18) 40%, transparent 70%); opacity: .7; animation: floatA 14s ease-in-out infinite; }
+    .halo-2 { bottom: -20%; left: -15%; width: 800px; height: 800px; background: radial-gradient(circle, rgba(186,230,255,.25) 0%, rgba(219,234,254,.18) 40%, transparent 70%); opacity: .6; animation: floatB 18s ease-in-out infinite; }
+    .halo-3 { top: 30%; left: 40%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(237,233,254,.18) 0%, rgba(252,231,243,.22) 40%, transparent 70%); opacity: .5; animation: floatC 20s ease-in-out infinite; }
+    .blob-1 { position: absolute; top: 15%; right: 12%; width: 18rem; height: 18rem; border-radius: 45% 55% 65% 35%/50% 60% 40% 50%; background: linear-gradient(135deg, rgba(255,127,80,.07), rgba(252,231,243,.13), transparent); filter: blur(24px); animation: morphA 12s ease-in-out infinite; }
+    .blob-2 { position: absolute; bottom: 10%; left: 8%; width: 14rem; height: 14rem; border-radius: 55% 45% 35% 65%/40% 50% 60% 50%; background: linear-gradient(135deg, rgba(186,230,255,.12), rgba(219,234,254,.15), transparent); filter: blur(20px); animation: morphB 16s ease-in-out infinite; }
+    @keyframes floatA { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(20px,-30px) scale(1.08);} }
+    @keyframes floatB { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-25px,20px) scale(1.05);} }
+    @keyframes floatC { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(15px,-15px) scale(1.06);} }
+    @keyframes morphA { 0%,100%{transform:translate(0,0) rotate(0deg) scale(1); border-radius:45% 55% 65% 35%/50% 60% 40% 50%;} 33%{transform:translate(-12px,18px) rotate(6deg) scale(1.05);} 66%{transform:translate(8px,-10px) rotate(-4deg) scale(.97);} }
+    @keyframes morphB { 0%,100%{transform:translate(0,0) rotate(0deg) scale(1);} 50%{transform:translate(10px,-15px) rotate(-5deg) scale(1.04);} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+    .hero-content { position: relative; z-index: 10; text-align: center; max-width: 860px; margin: 0 auto; }
+    [dir="rtl"] .hero-content { text-align: right; }
+    .hero-badge { display: inline-block; padding: .3rem .9rem; border-radius: var(--radius-full); background: rgba(255,127,80,.1); color: var(--coral); font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,127,80,.2); margin-bottom: 1.5rem; animation: fadeUp .8s ease both; }
+    .hero-h1 { font-size: clamp(2.2rem,6vw,4.5rem); font-weight: 800; color: var(--secondary-dark); margin-bottom: 1.5rem; line-height: 1.1; letter-spacing: -.02em; animation: fadeUp .8s .1s ease both; }
+    .hero-h1 .rebsam-logo { font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: -.02em; }
+    .hero-h1 .rebsam-logo .reb { color: var(--primary); }
+    .hero-h1 .rebsam-logo .sam { color: var(--secondary-dark); }
+    .hero-p { font-size: clamp(1.0625rem,2.2vw,1.375rem); color: rgba(45,55,72,.65); margin-bottom: 2.5rem; max-width: 640px; margin-left: auto; margin-right: auto; line-height: 1.7; animation: fadeUp .8s .2s ease both; }
+    .hero-p strong { font-weight: 600; color: var(--secondary-dark); }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; animation: fadeUp .8s .3s ease both; }
+    [dir="rtl"] .hero-btns { justify-content: flex-end; }
+    @media (max-width: 639px) { .hero-btns { flex-direction: column; align-items: stretch; } .hero-btns .btn { justify-content: center; } }
+    .hero-card { position: relative; margin: 4rem auto 0; max-width: 600px; background: rgba(255,255,255,.85); border: 1px solid rgba(0,0,0,.08); border-radius: var(--radius-2xl); box-shadow: var(--shadow-2xl); backdrop-filter: blur(20px); overflow: hidden; animation: fadeUp .8s .5s ease both; }
+    .hero-card-header { background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%); padding: .875rem 1.25rem; display: flex; align-items: center; gap: .75rem; }
+    .hero-card-avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.05rem; color: #fff; }
+    .hero-card-title { font-weight: 700; color: #fff; font-size: .9375rem; }
+    .hero-card-sub { font-size: .75rem; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: .35rem; }
+    .dot-green { width: .5rem; height: .5rem; border-radius: 50%; background: #4ade80; display: inline-block; }
+    .hero-card-body { padding: 1rem 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .75rem; }
+    .preview-bubble { padding: .75rem 1rem; border-radius: 1rem; font-size: .875rem; line-height: 1.55; max-width: 85%; }
+    .preview-sam { background: #f0f4ff; border: 1px solid rgba(0,86,210,.1); color: var(--secondary-dark); align-self: flex-start; border-top-left-radius: .2rem; }
+    .preview-user { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; align-self: flex-end; border-top-right-radius: .2rem; }
+    .preview-typing { display: flex; align-items: center; gap: .35rem; padding: .75rem 1rem; }
+    .typing-dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--primary); opacity: .6; animation: typingBounce 1.2s ease-in-out infinite; }
+    .typing-dot:nth-child(2){animation-delay:.2s;} .typing-dot:nth-child(3){animation-delay:.4s;}
+    @keyframes typingBounce { 0%,80%,100%{transform:translateY(0);opacity:.5;} 40%{transform:translateY(-8px);opacity:1;} }
+    .hero-card-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 5rem; background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,.8) 50%, transparent 100%); pointer-events: none; }
+
+    /* SECTIONS */
+    .section-heading { text-align: center; margin-bottom: 3rem; }
+    [dir="rtl"] .section-heading { text-align: right; }
+    .section-heading h2 { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 800; color: var(--secondary-dark); margin-bottom: .75rem; }
+    .section-heading p { font-size: 1.0625rem; color: rgba(45,55,72,.65); max-width: 560px; margin: 0 auto; line-height: 1.65; }
+    .section-eyebrow { display: inline-block; padding: .25rem .875rem; border-radius: var(--radius-full); background: rgba(0,86,210,.07); color: var(--primary); font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; border: 1px solid rgba(0,86,210,.15); }
+
+    /* HOW IT WORKS */
+    #how-it-works { padding: 6rem 0; background: var(--bg-soft); position: relative; overflow: hidden; }
+    .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 3rem; position: relative; }
+    @media (max-width: 767px) { .steps-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+    .steps-grid::before { content: ''; position: absolute; top: 3rem; left: calc(50%/3 + 1rem); right: calc(50%/3 + 1rem); height: 2px; background: linear-gradient(90deg, rgba(0,86,210,.2) 0%, rgba(0,86,210,.5) 50%, rgba(0,86,210,.2) 100%); z-index: 0; }
+    @media (max-width: 767px) { .steps-grid::before { display: none; } }
+    .step-item { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; animation: fadeUp .6s ease both; }
+    [dir="rtl"] .step-item { text-align: right; align-items: flex-end; }
+    .step-icon { width: 6rem; height: 6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); border: 4px solid #fff; transition: transform .3s, box-shadow .3s; }
+    .step-item:hover .step-icon { transform: scale(1.1); box-shadow: var(--shadow-lg); }
+    .step-icon-blue { background: #eff6ff; color: #2563eb; }
+    .step-icon-indigo { background: #eef2ff; color: #4f46e5; }
+    .step-icon-cyan { background: #ecfeff; color: #0891b2; }
+    .step-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: .75rem; }
+    .step-desc { font-size: .9375rem; color: rgba(45,55,72,.75); line-height: 1.65; max-width: 18rem; }
+
+    /* PILLARS */
+    #pillars { padding: 6rem 0; background: #fff; position: relative; overflow: hidden; }
+    .pillars-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; position: relative; }
+    @media (max-width: 767px) { .pillars-grid { grid-template-columns: 1fr; } }
+    .pillars-glow { position: absolute; inset: -8rem; pointer-events: none; z-index: 0; }
+    .pillars-glow::before,.pillars-glow::after { content: ''; position: absolute; border-radius: 50%; filter: blur(140px); }
+    .pillars-glow::before { top: -30%; left: 5%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,127,80,.28) 0%, rgba(252,231,243,.35) 40%, transparent 70%); opacity: .8; }
+    .pillars-glow::after { bottom: -25%; right: 0; width: 800px; height: 800px; background: radial-gradient(circle, rgba(186,230,255,.38) 0%, rgba(237,233,254,.35) 40%, transparent 70%); opacity: .75; }
+    .feature-card { position: relative; z-index: 1; background: rgba(255,255,255,.85); border: 1px solid rgba(0,0,0,.07); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-sm); transition: transform .3s, box-shadow .3s; backdrop-filter: blur(8px); }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .feature-card-icon { width: 3.5rem; height: 3.5rem; border-radius: .875rem; background: rgba(0,86,210,.08); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--primary); }
+    .feature-card h3 { font-size: 1.25rem; font-weight: 700; color: var(--secondary-dark); margin-bottom: .75rem; }
+    .feature-card p { font-size: .9375rem; color: rgba(45,55,72,.72); line-height: 1.65; }
+
+    /* FAQ */
+    #faq { padding: 6rem 0; background: var(--bg-soft); position: relative; overflow: hidden; }
+    .faq-list { max-width: 760px; margin: 0 auto; background: #fff; border-radius: var(--radius-2xl); box-shadow: var(--shadow-md); overflow: hidden; }
+    .faq-item { border-bottom: 1px solid #f3f4f6; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-question { width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 1.5rem 2rem; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; font-size: 1.0625rem; font-weight: 500; color: var(--secondary-dark); transition: color .25s; gap: 1rem; }
+    [dir="rtl"] .faq-question { text-align: right; flex-direction: row-reverse; }
+    .faq-question:hover,.faq-question.open { color: var(--primary); }
+    .faq-chevron { flex-shrink: 0; width: 1.25rem; height: 1.25rem; color: #9ca3af; transition: transform .3s, color .3s; }
+    .faq-question.open .faq-chevron { transform: rotate(180deg); color: var(--primary); }
+    .faq-answer { display: none; padding: 0 2rem 1.5rem; font-size: .9375rem; color: rgba(45,55,72,.75); line-height: 1.75; }
+    [dir="rtl"] .faq-answer { text-align: right; }
+    .faq-answer.open { display: block; }
+
+    /* FOOTER */
+    footer { background: #fff; border-top: 1px solid #f3f4f6; padding: 4rem 0 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    @media (max-width: 767px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+    .footer-brand p { font-size: .9375rem; color: rgba(45,55,72,.65); line-height: 1.65; max-width: 24rem; margin-bottom: 1.5rem; margin-top: 1rem; }
+    .footer-cta { display: inline-flex; align-items: center; gap: .5rem; background: var(--primary); color: #fff; padding: .625rem 1.25rem; border-radius: var(--radius-full); font-size: .875rem; font-weight: 500; transition: background .25s, transform .25s; }
+    .footer-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .footer-col h4 { font-size: .9375rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .footer-col li a { font-size: .9375rem; color: rgba(45,55,72,.65); transition: color .25s; }
+    .footer-col li a:hover { color: var(--primary); }
+    .footer-contact-item { display: flex; align-items: flex-start; gap: .75rem; font-size: .9375rem; color: rgba(45,55,72,.65); }
+    .footer-contact-item svg { color: var(--primary); flex-shrink: 0; margin-top: 1px; }
+    .footer-bottom { border-top: 1px solid #f3f4f6; padding-top: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; font-size: .875rem; color: rgba(45,55,72,.45); }
+    .footer-bottom-links { display: flex; gap: 1.5rem; }
+    .footer-bottom-links a:hover { color: var(--primary); }
+
+    /* FLOATING BUTTONS */
+    .float-btn { position: fixed; bottom: 1.5rem; z-index: 300; border: none; cursor: pointer; background: none; padding: 0; }
+    #btn-chat { left: 1.5rem; } #btn-wa { right: 1.5rem; }
+    .float-inner { position: relative; display: inline-flex; align-items: center; gap: .75rem; padding: .75rem 1.5rem; border-radius: var(--radius-full); font-family: 'Inter', sans-serif; font-weight: 600; font-size: .9375rem; color: #fff; transition: transform .3s; }
+    .float-inner:hover { transform: scale(1.05); }
+    .float-glow { position: absolute; inset: 0; border-radius: var(--radius-full); filter: blur(12px); opacity: .5; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:.5;transform:scale(1);} 50%{opacity:.7;transform:scale(1.05);} }
+    .float-chat-bg { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+    .float-chat-glow { background: var(--primary); }
+    .float-wa-bg { background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%); }
+    .float-wa-glow { background: #25D366; }
+    .float-label { position: relative; z-index: 1; white-space: nowrap; }
+    .float-icon { position: relative; z-index: 1; display: flex; }
+    @media (max-width: 767px) { .float-label { display: none; } }
+
+    /* CHAT MODAL */
+    #chat-overlay { display: none; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; padding: 1rem; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+    #chat-overlay.open { display: flex; }
+    #chat-modal { position: relative; width: 100%; max-width: 680px; height: min(80vh,680px); background: #fff; border-radius: 1.5rem; box-shadow: var(--shadow-2xl); display: flex; flex-direction: column; overflow: hidden; animation: modalIn .3s ease; }
+    @keyframes modalIn { from{opacity:0;transform:scale(.95) translateY(20px);} to{opacity:1;transform:scale(1) translateY(0);} }
+    .chat-header { background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 1.125rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .chat-header-left { display: flex; align-items: center; gap: .75rem; }
+    .chat-avatar { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.1rem; color: #fff; }
+    .chat-header-name { font-weight: 700; color: #fff; font-size: .9375rem; }
+    .chat-header-status { font-size: .75rem; color: rgba(255,255,255,.72); display: flex; align-items: center; gap: .35rem; margin-top: .15rem; }
+    .chat-header-status .dot { width: .45rem; height: .45rem; border-radius: 50%; background: #4ade80; display: inline-block; }
+    .chat-close { width: 2rem; height: 2rem; border-radius: 50%; background: rgba(255,255,255,.15); border: none; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s; }
+    .chat-close:hover { background: rgba(255,255,255,.25); transform: rotate(90deg); }
+    #chat-box { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; background: linear-gradient(160deg, rgba(239,246,255,.45) 0%, rgba(255,255,255,1) 50%, rgba(250,245,255,.2) 100%); }
+    #chat-box::-webkit-scrollbar{width:4px;} #chat-box::-webkit-scrollbar-track{background:transparent;} #chat-box::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:4px;}
+    .msg-row { display: flex; align-items: flex-end; gap: .6rem; }
+    .msg-row.user { flex-direction: row-reverse; }
+    .msg-avatar { width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .7rem; color: #fff; flex-shrink: 0; }
+    .msg-avatar.sam { background: var(--primary); }
+    .msg-avatar.user { background: linear-gradient(135deg, #9ca3af, #6b7280); font-size: .65rem; }
+    .msg-bubble { max-width: 78%; padding: .875rem 1.125rem; border-radius: 1.125rem; font-size: .875rem; line-height: 1.6; box-shadow: var(--shadow-sm); word-break: break-word; }
+    .msg-bubble.sam { background: #fff; border: 1px solid #f3f4f6; color: var(--secondary-dark); border-top-left-radius: .2rem; }
+    .msg-bubble.user { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border-top-right-radius: .2rem; white-space: pre-line; }
+    .msg-bubble.sam b,.msg-bubble.sam strong { color: #0056D2; font-weight: 700; }
+    .msg-bubble.sam em { font-style: italic; }
+    .msg-bubble.sam code { background: rgba(0,86,210,.08); padding: 1px 5px; border-radius: 4px; font-size: .85em; }
+    .msg-bubble.sam ul,.msg-bubble.sam ol { padding-left: 1.25rem; margin: .3rem 0; }
+    .msg-bubble.sam li { margin-bottom: .2rem; }
+    .msg-bubble.sam hr { border: none; border-top: 1px solid #e5e7eb; margin: .6rem 0; }
+    .loading-dots { display: flex; align-items: center; gap: .35rem; padding: .25rem 0; }
+    .loading-dots span { width: .5rem; height: .5rem; border-radius: 50%; background: var(--primary); opacity: .6; animation: dotBounce 1.2s ease-in-out infinite; }
+    .loading-dots span:nth-child(2){animation-delay:.2s;} .loading-dots span:nth-child(3){animation-delay:.4s;}
+    @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.5;} 40%{transform:translateY(-7px);opacity:1;} }
+    .chat-input-area { padding: 1rem; background: #fff; border-top: 1px solid #f3f4f6; flex-shrink: 0; }
+    .chat-input-row { display: flex; align-items: center; gap: .75rem; background: #f9fafb; border-radius: 1rem; padding: .75rem 1rem; border: 1.5px solid #e5e7eb; transition: border-color .25s, box-shadow .25s; }
+    .chat-input-row:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,86,210,.1); }
+    #chat-input { flex: 1; background: none; border: none; outline: none; font-family: 'Inter', sans-serif; font-size: .875rem; color: var(--secondary-dark); }
+    #chat-input::placeholder { color: #9ca3af; }
+    #chat-input:disabled { opacity: .5; }
+    #chat-send { width: 2.5rem; height: 2.5rem; border-radius: .75rem; background: var(--primary); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .25s, transform .15s; flex-shrink: 0; }
+    #chat-send:hover:not(:disabled){background:var(--primary-dark);transform:scale(1.08);}
+    #chat-send:disabled{opacity:.4;cursor:not-allowed;}
+    .chat-hint { text-align: center; font-size: .7375rem; color: #9ca3af; margin-top: .5rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <div class="container nav-inner">
+    <a href="#" class="logo font-logo"><span class="reb">Reb</span><span class="sam">Sam</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#" data-i18n="nav_home">Accueil</a></li>
+        <li><a href="#how-it-works" data-i18n="nav_how">Comment ça marche</a></li>
+        <li><a href="#pillars" data-i18n="nav_values">Nos Valeurs</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <div class="lang-switcher">
+        <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn" onclick="setLang('he')">עב</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="#" class="nav-cta" onclick="openChat();return false;" data-i18n="nav_cta">Essayer RebSam</a>
+    </div>
+    <button id="hamburger" aria-label="Menu">
+      <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="icon-close-menu" style="display:none;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu">
+  <a href="#" onclick="closeMobileMenu()" data-i18n="nav_home">Accueil</a>
+  <a href="#how-it-works" onclick="closeMobileMenu()" data-i18n="nav_how">Comment ça marche</a>
+  <a href="#pillars" onclick="closeMobileMenu()" data-i18n="nav_values">Nos Valeurs</a>
+  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <a href="#" onclick="openChat();closeMobileMenu();return false;" class="btn-primary-mobile" data-i18n="nav_cta">Essayer RebSam</a>
+  <div class="mobile-lang">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('he')">עב</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"><div class="halo halo-1"></div><div class="halo halo-2"></div><div class="halo halo-3"></div><div class="blob-1"></div><div class="blob-2"></div></div>
+  <div class="container">
+    <div class="hero-content">
+      <span class="hero-badge" data-i18n="hero_badge">Votre expert en Halacha, disponible 24h/24</span>
+      <h1 class="hero-h1">
+        <span class="rebsam-logo font-logo"><span class="reb">Reb</span><span class="sam">Sam</span></span><span data-i18n="hero_tagline"> : Un Rebbe dans votre dose d'IA quotidienne.</span>
+      </h1>
+      <p class="hero-p">
+        <span data-i18n="hero_sub1">Posez vos questions en hébreu, français ou anglais.</span><br>
+        <strong data-i18n="hero_sub2">RebSam répond avec les sources exactes — en quelques secondes.</strong>
+      </p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="openChat()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="hero_cta">Pose ta première question à RebSam</span>
+        </button>
+        <a href="#how-it-works" class="btn btn-ghost">
+          <span data-i18n="hero_cta2">Découvrir comment ça marche</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-avatar font-logo">RS</div>
+          <div><div class="hero-card-title">RebSam</div><div class="hero-card-sub"><span class="dot-green"></span><span data-i18n="chat_status">En ligne · Expert Halacha</span></div></div>
+        </div>
+        <div class="hero-card-body">
+          <div class="preview-bubble preview-user" data-i18n="hero_preview_q">Peut-on utiliser un téléphone le Chabbat en cas d'urgence médicale ?</div>
+          <div class="preview-bubble preview-sam" data-i18n="hero_preview_a"><b>Pikouah Nefech (פיקוח נפש)</b> — En cas de danger de vie avéré, non seulement c'est permis, c'est une <b>obligation</b> selon le Choulhan Aroukh (O.H. 328:2) et la Michna Beroura.</div>
+          <div class="preview-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+        </div>
+        <div class="hero-card-fade"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow" data-i18n="how_eyebrow">En 3 étapes simples</span>
+      <h2 data-i18n="how_title">Comment ça marche ?</h2>
+      <p data-i18n="how_sub">Aussi simple qu'une conversation. Aussi précis qu'un Possek.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item" style="animation-delay:.0s">
+        <div class="step-icon step-icon-blue"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <h3 class="step-title" data-i18n="step1_title">1. Tu poses ta question</h3>
+        <p class="step-desc" data-i18n="step1_desc">Écris simplement, comme tu parlerais à un ami. Pas besoin de connaître les termes techniques — RebSam te comprend.</p>
+      </div>
+      <div class="step-item" style="animation-delay:.2s">
+        <div class="step-icon step-icon-indigo"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <h3 class="step-title" data-i18n="step2_title">2. RebSam cherche pour toi</h3>
+        <p class="step-desc" data-i18n="step2_desc">En quelques secondes, il explore des milliers de pages de textes sacrés validés pour trouver la réponse la plus précise.</p>
+      </div>
+      <div class="step-item" style="animation-delay:.4s">
+        <div class="step-icon step-icon-cyan"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <h3 class="step-title" data-i18n="step3_title">3. Ta réponse arrive</h3>
+        <p class="step-desc" data-i18n="step3_desc">Tu reçois une réponse claire et chaleureuse, avec le Siman et le Seif exacts — pour que tu puisses vérifier toi-même.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="hero-bg" style="position:absolute;inset:0;z-index:0;"><div class="halo halo-1" style="opacity:.5;"></div><div class="halo halo-2" style="opacity:.4;"></div></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-heading">
+      <span class="section-eyebrow" data-i18n="pillars_eyebrow">Nos engagements</span>
+      <h2 data-i18n="pillars_title">Nos 3 Piliers de Confiance</h2>
+      <p data-i18n="pillars_sub">RebSam répond toujours selon ces 3 engagements — sans exception.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillars-glow"></div>
+      <div class="feature-card">
+        <div class="feature-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <h3 data-i18n="p1_title">Sources Validées</h3>
+        <p data-i18n="p1_desc">Pas d'invention. Pas d'hallucination. Chaque réponse est ancrée dans nos textes sacrés — Shulchan Aruch, Mishna Berura, Poskim contemporains et bien d'autres.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <h3 data-i18n="p2_title">Kavod HaTorah</h3>
+        <p data-i18n="p2_desc">Un espace sanctuarisé. RebSam parle avec la chaleur d'un Mashpia : pas de lachon hara, pas de dérives — uniquement Torah.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+        <h3 data-i18n="p3_title">Circuit Fermé</h3>
+        <p data-i18n="p3_desc">Tes questions les plus intimes restent strictement privées. Zéro collecte, zéro revente, zéro entraînement externe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="hero-bg" style="position:absolute;inset:0;z-index:0;opacity:.5;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-heading">
+      <span class="section-eyebrow" data-i18n="faq_eyebrow">Questions fréquentes</span>
+      <h2 data-i18n="faq_title">Tout ce que tu dois savoir</h2>
+      <p data-i18n="faq_sub">Pour utiliser RebSam en toute sérénité.</p>
+    </div>
+    <div class="faq-list" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo font-logo"><span class="reb">Reb</span><span class="sam">Sam</span></div>
+        <p data-i18n="footer_tagline">Votre assistant expert en Halacha. Une technologie respectueuse pour une étude authentique et accessible à tous, 24/7.</p>
+        <a href="#" onclick="openChat();return false;" class="footer-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="nav_cta">Essayer RebSam</span>
+        </a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_nav">Navigation</h4>
+        <ul>
+          <li><a href="#" data-i18n="nav_home">Accueil</a></li>
+          <li><a href="#how-it-works" data-i18n="nav_how">Comment ça marche</a></li>
+          <li><a href="#pillars" data-i18n="nav_values">Nos Valeurs</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact">Contact</h4>
+        <ul>
+          <li><div class="footer-contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:rebbesam@callsam.net">rebbesam@callsam.net</a></div></li>
+          <li><div class="footer-contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Jérusalem, Israël</span></div></li>
+          <li style="font-size:.8125rem;color:rgba(45,55,72,.45);padding-top:.5rem;" data-i18n="footer_support">Support : Réponse sous 24h</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> RebSam. <span data-i18n="footer_rights">Tous droits réservés.</span></p>
+      <div class="footer-bottom-links">
+        <a href="#" data-i18n="footer_legal">Mentions Légales</a>
+        <a href="#" data-i18n="footer_privacy">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<button id="btn-chat" class="float-btn" onclick="openChat()" aria-label="Chat">
+  <div class="float-inner float-chat-bg">
+    <div class="float-glow float-chat-glow"></div>
+    <span class="float-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+    <span class="float-label" data-i18n="chat_float">Chat avec RebSam ici</span>
+  </div>
+</button>
+<a id="btn-wa" class="float-btn" href="https://wa.me/15551790835?text=Chalom%20Rebbe%20Sam%2C%20j'ai%20une%20question" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+  <div class="float-inner float-wa-bg">
+    <div class="float-glow float-wa-glow"></div>
+    <span class="float-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
+    <span class="float-label" data-i18n="wa_float">Parler à RebSam sur WA</span>
+  </div>
+</a>
+
+<!-- CHAT MODAL -->
+<div id="chat-overlay">
+  <div id="chat-modal" role="dialog" aria-modal="true">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-avatar font-logo">RS</div>
+        <div><div class="chat-header-name">RebSam</div><div class="chat-header-status"><span class="dot"></span><span data-i18n="chat_status">En ligne · Expert Halacha</span></div></div>
+      </div>
+      <button class="chat-close" onclick="closeChat()" aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="chat-box"></div>
+    <div class="chat-input-area">
+      <div class="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Posez votre question en Halacha…" autocomplete="off" />
+        <button id="chat-send" onclick="sendMessage()" aria-label="Envoyer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+      <p class="chat-hint" data-i18n="chat_hint">Entrée pour envoyer · Sources : Shulchan Aruch, Mishna Berura</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════ TRANSLATIONS ═══════════════ */
+var T = {
+  fr: {
+    nav_home:'Accueil', nav_how:'Comment ça marche', nav_values:'Nos Valeurs', nav_cta:'Essayer RebSam',
+    hero_badge:'Votre expert en Halacha, disponible 24h/24',
+    hero_tagline:' : Un Rebbe dans votre dose d\'IA quotidienne.',
+    hero_sub1:'Posez vos questions en hébreu, français ou anglais.',
+    hero_sub2:'RebSam répond avec les sources exactes — en quelques secondes.',
+    hero_cta:'Pose ta première question à RebSam', hero_cta2:'Découvrir comment ça marche',
+    hero_preview_q:'Peut-on utiliser un téléphone le Chabbat en cas d\'urgence médicale ?',
+    hero_preview_a:'<b>Pikouah Nefech (פיקוח נפש)</b> — En cas de danger de vie avéré, non seulement c\'est permis, c\'est une <b>obligation</b> selon le Choulhan Aroukh (O.H. 328:2) et la Michna Beroura.',
+    chat_status:'En ligne · Expert Halacha',
+    how_eyebrow:'En 3 étapes simples', how_title:'Comment ça marche ?', how_sub:'Aussi simple qu\'une conversation. Aussi précis qu\'un Possek.',
+    step1_title:'1. Tu poses ta question', step1_desc:'Écris simplement, comme tu parlerais à un ami. Pas besoin de connaître les termes techniques — RebSam te comprend.',
+    step2_title:'2. RebSam cherche pour toi', step2_desc:'En quelques secondes, il explore des milliers de pages de textes sacrés validés pour trouver la réponse la plus précise.',
+    step3_title:'3. Ta réponse arrive', step3_desc:'Tu reçois une réponse claire et chaleureuse, avec le Siman et le Seif exacts — pour que tu puisses vérifier toi-même.',
+    pillars_eyebrow:'Nos engagements', pillars_title:'Nos 3 Piliers de Confiance', pillars_sub:'RebSam répond toujours selon ces 3 engagements — sans exception.',
+    p1_title:'Sources Validées', p1_desc:'Pas d\'invention. Pas d\'hallucination. Chaque réponse est ancrée dans nos textes sacrés — Shulchan Aruch, Mishna Berura, Poskim contemporains et bien d\'autres.',
+    p2_title:'Kavod HaTorah', p2_desc:'Un espace sanctuarisé. RebSam parle avec la chaleur d\'un Mashpia : pas de lachon hara, pas de dérives — uniquement Torah.',
+    p3_title:'Circuit Fermé', p3_desc:'Tes questions les plus intimes restent strictement privées. Zéro collecte, zéro revente, zéro entraînement externe.',
+    faq_eyebrow:'Questions fréquentes', faq_title:'Tout ce que tu dois savoir', faq_sub:'Pour utiliser RebSam en toute sérénité.',
+    faq_items:[
+      {q:'Puis-je vraiment faire confiance aux réponses de RebSam ?', a:'RebSam est un compagnon d\'étude extrêmement fiable — il cite toujours ses sources avec précision (Livre, Siman, Seif). Mais pour un Psak formel, consulte toujours ton Rav. Lui seul connaît tous les détails de ta situation.'},
+      {q:'Sur quels textes sacrés RebSam s\'appuie-t-il ?', a:'Exclusivement des textes validés : Choulhan Aroukh, Michna Beroura, Yalkout Yossef, Igrot Moshé, Hazon Ish, Ben Ich Haï, Kaf HaHaïm, et bien d\'autres Poskim. Contrairement à ChatGPT, RebSam ne devine jamais.'},
+      {q:'Mes questions restent-elles confidentielles ?', a:'Absolument. RebSam fonctionne en circuit fermé : tes conversations ne sont jamais utilisées pour entraîner un modèle public. Pose tes questions les plus intimes — sans honte, sans jugement.'},
+      {q:'RebSam connaît-il les coutumes ashkénazes et séfarades ?', a:'Oui ! Précise simplement ton rite dans ta question ("je suis Séfarade" ou "Ashkénaze"), et RebSam adaptera sa réponse en citant les Poskim correspondants.'}
+    ],
+    footer_tagline:'Votre assistant expert en Halacha. Une technologie respectueuse pour une étude authentique et accessible à tous, 24/7.',
+    footer_nav:'Navigation', footer_contact:'Contact', footer_support:'Support : Réponse sous 24h',
+    footer_rights:'Tous droits réservés.', footer_legal:'Mentions Légales', footer_privacy:'Confidentialité',
+    chat_float:'Chat avec RebSam ici', wa_float:'Parler à RebSam sur WA',
+    chat_hint:'Entrée pour envoyer · Sources : Shulchan Aruch, Mishna Berura',
+    chat_error:'Désolé, une erreur s\'est produite. Réessayez ou passez par WhatsApp.',
+    chat_lang_inst:'[Instruction : Réponds en français]',
+    chat_placeholder:'Posez votre question en Halacha…',
+    chat_welcome:'Chalom ! 🌿\nJe suis RebSam — ton compagnon d\'étude halakhique.\n\nPose-moi n\'importe quelle question : Kacherout, Chabbat, Niddah, Tefila, relations, business… Je réponds avec les sources exactes, sans jugement, 24h/24.\n\nJe suis guidé par mes 3 piliers de confiance :\n📖 Sources Validées — parmi les textes consultés aujourd\'hui :\n{SOURCES}\n👑 Kavod HaTorah — un langage respectueux et sanctuarisé.\n🔒 Circuit Fermé — tes questions restent strictement privées.\n\nPar où veux-tu commencer ?'
+  },
+  he: {
+    nav_home:'דף הבית', nav_how:'איך זה עובד', nav_values:'הערכים שלנו', nav_cta:'נסה את RebSam',
+    hero_badge:'מומחה הלכה · זמין בכל עת',
+    hero_tagline:' — בין בינה מלאכותית לבינה של תורה',
+    hero_sub1:'שאלות בעברית, צרפתית או אנגלית.',
+    hero_sub2:'תשובות מדויקות היישר מהמקורות — תוך שניות.',
+    hero_cta:'שאל את שאלתך הראשונה', hero_cta2:'גלה כיצד זה עובד',
+    hero_preview_q:'האם מותר להשתמש בטלפון בשבת במקרה של סכנת נפשות?',
+    hero_preview_a:'<b>פיקוח נפש</b> — במקרה של סכנת חיים ממשית, לא רק שמותר — זו <b>חובה</b> לפי שולחן ערוך (או"ח שכ"ח:ב) ומשנה ברורה.',
+    chat_status:'מחובר · עונה תוך שניות',
+    how_eyebrow:'פשוט ומהיר', how_title:'איך זה עובד', how_sub:'שלושה שלבים, תשובה אחת. פשוט כמו לדבר עם חבר מלומד.',
+    step1_title:'אתה שואל', step1_desc:'כתוב פשוט, כמו שתדבר עם חבר. אין צורך לדעת מונחים טכניים — RebSam מבין אותך.',
+    step2_title:'RebSam מחפש עבורך', step2_desc:'תוך שניות, הוא סורק אלפי דפים של טקסטים קדושים מאומתים כדי למצוא את התשובה המדויקת ביותר.',
+    step3_title:'התשובה מגיעה', step3_desc:'אתה מקבל תשובה ברורה וחמה, עם הסימן והסעיף המדויקים — כדי שתוכל לבדוק בעצמך.',
+    pillars_eyebrow:'ההתחייבויות שלנו', pillars_title:'שלושת עמודי האמון שלנו', pillars_sub:'RebSam תמיד עונה לפי 3 התחייבויות אלה — ללא יוצא מן הכלל.',
+    p1_title:'מקורות מאומתים', p1_desc:'אין המצאה. אין הזיות. כל תשובה מעוגנת בטקסטים הקדושים — שולחן ערוך, משנה ברורה, פוסקים עכשוויים ועוד.',
+    p2_title:'כבוד התורה', p2_desc:'מרחב מקודש. RebSam מדבר בחמימות ובכבוד של משפיע: אין לשון הרע, אין סטיות — תורה בלבד.',
+    p3_title:'מעגל סגור', p3_desc:'השאלות הכי אינטימיות שלך נשארות פרטיות לחלוטין. אפס איסוף, אפס מכירה, אפס אימון חיצוני.',
+    faq_eyebrow:'שאלות נפוצות', faq_title:'כל מה שצריך לדעת', faq_sub:'לשימוש ב-RebSam בשקט נפשי מלא.',
+    faq_items:[
+      {q:'האם אני יכול לסמוך על תשובות RebSam?', a:'RebSam הוא חברותא מהימנה ביותר — הוא תמיד מציין את מקורותיו במדויק. אך לפסיקה רשמית, תמיד התייעץ עם הרב שלך.'},
+      {q:'על אילו טקסטים קדושים RebSam מסתמך?', a:'אך ורק טקסטים מאומתים: שולחן ערוך, משנה ברורה, ילקוט יוסף, אגרות משה, חזון איש, בן איש חי, כף החיים ועוד פוסקים רבים.'},
+      {q:'האם השאלות שלי נשארות חסויות?', a:'בהחלט. RebSam פועל במעגל סגור: השיחות שלך לא משמשות לאימון מודל ציבורי. שאל את השאלות הכי אינטימיות — ללא בושה, ללא שיפוט.'},
+      {q:'האם RebSam מכיר את מנהגי אשכנז וספרד?', a:'כן! פשוט ציין את מנהגך בשאלתך ("אני ספרדי" או "אשכנזי"), ו-RebSam יתאים את תשובתו בהתאם.'}
+    ],
+    footer_tagline:'העוזר המומחה שלך בהלכה. טכנולוגיה מכבדת ללימוד אמיתי ונגיש לכולם, 24/7.',
+    footer_nav:'ניווט', footer_contact:'צור קשר', footer_support:'תמיכה: תגובה תוך 24 שעות',
+    footer_rights:'כל הזכויות שמורות.', footer_legal:'הצהרה משפטית', footer_privacy:'פרטיות',
+    chat_float:'שוחח עם RebSam', wa_float:'דבר עם RebSam בוואטסאפ',
+    chat_hint:'Enter לשליחה · מקורות: שולחן ערוך, משנה ברורה',
+    chat_error:'מצטערים, אירעה שגיאה. נסה שוב או פנה דרך WhatsApp.',
+    chat_lang_inst:'[Instruction: Respond in Hebrew / ענה בעברית]',
+    chat_placeholder:'שאל את שאלת ההלכה שלך…',
+    chat_welcome:'שלום! 🌿\nאני RebSam — חברותא שלך ללימוד הלכה.\n\nשאל אותי כל שאלה: כשרות, שבת, נידה, תפילה, יחסים, עסקים... אני עונה עם המקורות המדויקים, ללא שיפוט, 24 שעות ביממה.\n\nאני פועל על פי שלושה עמודי אמון:\n📖 מקורות מאומתים — מבין הספרים שנסקרו היום:\n{SOURCES}\n👑 כבוד התורה — שפה מכבדת ומקודשת.\n🔒 מעגל סגור — שאלותיך נשארות פרטיות לחלוטין.\n\nמאיפה נתחיל?'
+  },
+  en: {
+    nav_home:'Home', nav_how:'How It Works', nav_values:'Our Values', nav_cta:'Try RebSam',
+    hero_badge:'Halacha Expert · Available 24/7',
+    hero_tagline:': A Rebbe in your daily dose of AI.',
+    hero_sub1:'Ask your questions in Hebrew, French, or English.',
+    hero_sub2:'RebSam answers with exact sources — in seconds.',
+    hero_cta:'Ask your first question here', hero_cta2:'Discover how it works',
+    hero_preview_q:'Can a phone be used on Shabbat in a medical emergency?',
+    hero_preview_a:'<b>Pikuach Nefesh (פיקוח נפש)</b> — When life is at risk, not only is it permitted — it is an <b>obligation</b> according to Shulchan Aruch (O.H. 328:2) and Mishna Berura.',
+    chat_status:'Online · Halacha Expert',
+    how_eyebrow:'Simple & Fast', how_title:'How It Works', how_sub:'Three steps, one answer. As simple as talking to a learned friend.',
+    step1_title:'1. You ask your question', step1_desc:'Write simply, as if talking to a friend. No need to know technical terms — RebSam understands you.',
+    step2_title:'2. RebSam searches for you', step2_desc:'In seconds, it explores thousands of pages of validated sacred texts to find the most precise answer.',
+    step3_title:'3. Your answer arrives', step3_desc:'You receive a clear and warm answer, with the exact Siman and Seif — so you can verify it yourself.',
+    pillars_eyebrow:'Our Commitments', pillars_title:'Our 3 Pillars of Trust', pillars_sub:'RebSam always responds according to these 3 commitments — without exception.',
+    p1_title:'Validated Sources', p1_desc:'No invention. No hallucination. Every answer is rooted in sacred texts — Shulchan Aruch, Mishna Berura, contemporary Poskim and many others.',
+    p2_title:'Kavod HaTorah', p2_desc:'A sanctified space. RebSam speaks with the warmth of a Mashpia: no lashon hara, no digressions — Torah only.',
+    p3_title:'Closed Circuit', p3_desc:'Your most intimate questions remain strictly private. Zero collection, zero resale, zero external training.',
+    faq_eyebrow:'Frequently Asked', faq_title:'Everything You Need to Know', faq_sub:'To use RebSam with complete peace of mind.',
+    faq_items:[
+      {q:'Can I really trust RebSam\'s answers?', a:'RebSam is an extremely reliable study companion — it always cites its sources precisely. But for a formal ruling, always consult your Rav. He alone knows all the details of your situation.'},
+      {q:'Which sacred texts does RebSam draw from?', a:'Exclusively validated texts: Shulchan Aruch, Mishna Berura, Yalkout Yossef, Igrot Moshe, Hazon Ish, Ben Ish Chai, Kaf HaChaim, and many other Poskim. Unlike ChatGPT, RebSam never guesses.'},
+      {q:'Do my questions remain confidential?', a:'Absolutely. RebSam operates in a closed circuit: your conversations are never used to train a public model. Ask your most intimate questions — without shame, without judgment.'},
+      {q:'Does RebSam know Ashkenazi and Sephardic customs?', a:'Yes! Simply specify your rite in your question ("I am Sephardic" or "Ashkenazi"), and RebSam will adapt its answer accordingly.'}
+    ],
+    footer_tagline:'Your expert Halacha assistant. Respectful technology for authentic, accessible study for everyone, 24/7.',
+    footer_nav:'Navigation', footer_contact:'Contact', footer_support:'Support: Response within 24h',
+    footer_rights:'All rights reserved.', footer_legal:'Legal Notice', footer_privacy:'Privacy',
+    chat_float:'Chat with RebSam here', wa_float:'Talk to RebSam on WA',
+    chat_hint:'Enter to send · Sources: Shulchan Aruch, Mishna Berura',
+    chat_error:'Sorry, an error occurred. Please retry or contact via WhatsApp.',
+    chat_lang_inst:'[Instruction: Respond in English]',
+    chat_placeholder:'Ask your Halacha question…',
+    chat_welcome:'Shalom! 🌿\nI am RebSam — your Halachic study companion.\n\nAsk me any question: Kashrut, Shabbat, Niddah, Tefila, relationships, business… I answer with exact sources, without judgment, 24/7.\n\nI am guided by my 3 pillars of trust:\n📖 Validated Sources — among the texts consulted today:\n{SOURCES}\n👑 Kavod HaTorah — respectful and sanctified language.\n🔒 Closed Circuit — your questions remain strictly private.\n\nWhere would you like to start?'
+  }
+};
+
+/* ═══════════════ SOURCES ═══════════════ */
+var ALL_SOURCES = [
+  "Choulhan Aroukh (Maran Rabbi Yossef Karo)","Michna Beroura (Hafetz Haïm)",
+  "Yalkout Yossef (Maran Rav Ovadia Yossef)","Hazon Ovadia (Rav Ovadia Yossef)",
+  "Halikhot Olam (Rav Itshak Yossef)","Igrot Moshé (Rav Moshé Feinstein)",
+  "Kaf HaHaïm (Rav Yaakov Haïm Sofer)","Ben Ich Haï (Rav Yossef Haïm de Bagdad)",
+  "Hazon Ish (Rav Avraham Yeshaya Karelitz)","Tzitz Eliezer (Rav Waldenberg)",
+  "Shevet HaLevi (Rav Wosner)","Aroukh HaShoulhan (Rav Yehiel Michel Epstein)",
+  "Mishneh Torah — Rambam","Sefer HaHinoukh","Piskei Teshuvot","Nitei Gavriel",
+  "Le Kouzari (Rabbi Yehouda Halevi)","Hovot HaLevavot (Rabbenou Bahya)",
+  "Mesilat Yecharim (Ramhal)","Moreh Nevoukhim (Rambam)",
+  "Zohar Hakadoch","Etz Haïm (Ari Zal)","Likoutey Moharan (Rabbi Nahman de Breslev)",
+  "Choulhan Aroukh HaRav (Baal HaTanya)","Minhat Shlomo (Rav Shlomo Zalman Auerbach)",
+  "Kovetz Teshuvot (Rav Elyashiv)","Sefer Chofetz Chaim"
+];
+function pickRandom(arr,n){ return arr.slice().sort(function(){return Math.random()-.5;}).slice(0,n); }
+
+/* ═══════════════ LANGUAGE ═══════════════ */
+var currentLang = 'fr';
+var chatInitialized = false;
+
+function setLang(lang) {
+  currentLang = lang;
+  var t = T[lang];
+  var isRTL = lang === 'he';
+  document.documentElement.setAttribute('lang', lang);
+  document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  var inp = document.getElementById('chat-input');
+  if (inp) inp.placeholder = t.chat_placeholder;
+
+  // Lang buttons
+  var map = {fr:'FR', he:'עב', en:'EN'};
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent.trim() === map[lang]);
+  });
+
+  buildFaq(t);
+
+  if (chatInitialized) {
+    document.getElementById('chat-box').innerHTML = '';
+    initChat();
+  }
+}
+
+function buildFaq(t) {
+  var list = document.getElementById('faq-list');
+  if (!list) return;
+  list.innerHTML = '';
+  t.faq_items.forEach(function(item, i) {
+    var d = document.createElement('div');
+    d.className = 'faq-item';
+    d.innerHTML = '<button class="faq-question'+(i===0?' open':'')+'" onclick="toggleFaq(this)">'+item.q+'<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="faq-answer'+(i===0?' open':'')+'">'+item.a+'</div>';
+    list.appendChild(d);
+  });
+}
+
+/* ═══════════════ MARKDOWN → HTML ═══════════════ */
+function parseMarkdown(text) {
+  var lines = text.split('\n'), html = '', inUl = false, inOl = false;
+  function cl() { if(inUl){html+='</ul>';inUl=false;} if(inOl){html+='</ol>';inOl=false;} }
+  function inl(s) {
+    return s.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/__(.*?)__/g,'<b>$1</b>')
+            .replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/_(.*?)_/g,'<em>$1</em>')
+            .replace(/`([^`]+)`/g,'<code>$1</code>');
+  }
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].replace(/\s+$/,'');
+    if(/^### /.test(line)){cl();html+='<h3 style="font-weight:700;font-size:.92rem;margin:.7rem 0 .25rem;color:#0056D2;">'+inl(line.slice(4))+'</h3>';continue;}
+    if(/^## /.test(line)){cl();html+='<h2 style="font-weight:800;font-size:1rem;margin:.8rem 0 .3rem;color:#0056D2;">'+inl(line.slice(3))+'</h2>';continue;}
+    if(/^# /.test(line)){cl();html+='<h1 style="font-weight:900;font-size:1.1rem;margin:.9rem 0 .35rem;color:#0056D2;">'+inl(line.slice(2))+'</h1>';continue;}
+    if(/^---+$/.test(line)){cl();html+='<hr style="border:none;border-top:1px solid #e5e7eb;margin:.5rem 0;">';continue;}
+    var ulM=line.match(/^[-*•]\s+(.*)/);
+    if(ulM){if(inOl){html+='</ol>';inOl=false;}if(!inUl){html+='<ul style="padding-left:1.2rem;margin:.3rem 0;">';inUl=true;}html+='<li style="margin-bottom:.2rem;">'+inl(ulM[1])+'</li>';continue;}
+    var olM=line.match(/^\d+\.\s+(.*)/);
+    if(olM){if(inUl){html+='</ul>';inUl=false;}if(!inOl){html+='<ol style="padding-left:1.2rem;margin:.3rem 0;">';inOl=true;}html+='<li style="margin-bottom:.2rem;">'+inl(olM[1])+'</li>';continue;}
+    if(line.trim()===''){cl();html+='<br>';continue;}
+    cl();html+='<span style="display:block;margin-bottom:.25rem;">'+inl(line)+'</span>';
+  }
+  cl();
+  return html.replace(/(<br>){2,}/g,'<br>');
+}
+
+/* ═══════════════ SCROLL / MENU ═══════════════ */
+window.addEventListener('scroll',function(){document.getElementById('header').classList.toggle('scrolled',window.scrollY>20);});
+var menuOpen=false;
+document.getElementById('hamburger').addEventListener('click',function(){
+  menuOpen=!menuOpen;
+  document.getElementById('mobile-menu').classList.toggle('open',menuOpen);
+  document.getElementById('icon-menu').style.display=menuOpen?'none':'block';
+  document.getElementById('icon-close-menu').style.display=menuOpen?'block':'none';
+});
+function closeMobileMenu(){menuOpen=false;document.getElementById('mobile-menu').classList.remove('open');document.getElementById('icon-menu').style.display='block';document.getElementById('icon-close-menu').style.display='none';}
+
+/* ═══════════════ FAQ ═══════════════ */
+function toggleFaq(btn){
+  var isOpen=btn.classList.contains('open');
+  document.querySelectorAll('.faq-question').forEach(function(b){b.classList.remove('open');});
+  document.querySelectorAll('.faq-answer').forEach(function(a){a.classList.remove('open');});
+  if(!isOpen){btn.classList.add('open');btn.nextElementSibling.classList.add('open');}
+}
+
+/* ═══════════════ CHAT ═══════════════ */
+function openChat(){
+  document.getElementById('chat-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(!chatInitialized){initChat();chatInitialized=true;}
+  setTimeout(function(){document.getElementById('chat-input').focus();},150);
+}
+function closeChat(){document.getElementById('chat-overlay').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('chat-overlay').addEventListener('click',function(e){if(e.target===this)closeChat();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeChat();});
+
+function initChat(){
+  var t=T[currentLang];
+  var sources=pickRandom(ALL_SOURCES,5+Math.floor(Math.random()*2));
+  var list=sources.map(function(s){return '• '+s;}).join('\n');
+  var welcome=t.chat_welcome.replace('{SOURCES}',list);
+  addMessage('sam',welcome,false);
+}
+
+function addMessage(role,content,isHtml){
+  var box=document.getElementById('chat-box');
+  var row=document.createElement('div'); row.className='msg-row '+role;
+  var av=document.createElement('div'); av.className='msg-avatar '+role; av.textContent=role==='sam'?'RS':'✎';
+  var bubble=document.createElement('div'); bubble.className='msg-bubble '+role;
+  if(isHtml){bubble.innerHTML=content;}else{bubble.style.whiteSpace='pre-line';bubble.textContent=content;}
+  row.appendChild(av); row.appendChild(bubble); box.appendChild(row); box.scrollTop=box.scrollHeight;
+  return bubble;
+}
+
+function addLoadingMessage(){
+  var box=document.getElementById('chat-box');
+  var row=document.createElement('div'); row.className='msg-row sam';
+  var av=document.createElement('div'); av.className='msg-avatar sam'; av.textContent='RS';
+  var bubble=document.createElement('div'); bubble.className='msg-bubble sam';
+  bubble.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+  row.appendChild(av); row.appendChild(bubble); box.appendChild(row); box.scrollTop=box.scrollHeight;
+  return bubble;
+}
+
+async function sendMessage(){
+  var inputEl=document.getElementById('chat-input');
+  var sendBtn=document.getElementById('chat-send');
+  var question=inputEl.value.trim();
+  if(!question)return;
+  inputEl.value=''; inputEl.disabled=true; sendBtn.disabled=true;
+  addMessage('user',question,false);
+  var loadingBubble=addLoadingMessage();
+  var t=T[currentLang];
+  try{
+    var res=await fetch('https://hook.eu1.make.com/r1woeelogkk0bv2i6s5cxu3mli231nbg?prompt='+encodeURIComponent(question));
+    var raw=await res.text();
+    loadingBubble.innerHTML=parseMarkdown(raw);
+    loadingBubble.style.whiteSpace='normal';
+  }catch(err){
+    loadingBubble.innerHTML=t.chat_error+' <a href="https://wa.me/15551790835" target="_blank" style="color:#0056D2;text-decoration:underline;">WhatsApp</a>';
+  }
+  inputEl.disabled=false; sendBtn.disabled=false; inputEl.focus();
+  document.getElementById('chat-box').scrollTop=document.getElementById('chat-box').scrollHeight;
+}
+
+document.getElementById('chat-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+
+/* ═══════════════ SMOOTH SCROLL ═══════════════ */
+document.querySelectorAll('a[href^="#"]').forEach(function(link){
+  link.addEventListener('click',function(e){
+    var href=this.getAttribute('href');
+    if(href==='#')return;
+    var target=document.querySelector(href);
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+/* ═══════════════ INIT ═══════════════ */
+document.getElementById('year').textContent=new Date().getFullYear();
+setLang('fr');
+</script>
+</body>
+</html>
