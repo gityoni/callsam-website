@@ -730,8 +730,7 @@ async function sendMessage(){
   var loadingBubble=addLoadingMessage();
   var t=T[currentLang];
   try{
-    var prompt=t.chat_lang_inst+' '+question;
-    var res=await fetch('https://hook.eu1.make.com/r1woeelogkk0bv2i6s5cxu3mli231nbg?prompt='+encodeURIComponent(prompt));
+    var res=await fetch('https://hook.eu1.make.com/r1woeelogkk0bv2i6s5cxu3mli231nbg?prompt='+encodeURIComponent(question));
     var raw=await res.text();
     loadingBubble.innerHTML=parseMarkdown(raw);
     loadingBubble.style.whiteSpace='normal';
