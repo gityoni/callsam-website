@@ -78,16 +78,18 @@
     @keyframes morphB { 0%,100%{transform:translate(0,0) rotate(0deg) scale(1);} 50%{transform:translate(10px,-15px) rotate(-5deg) scale(1.04);} }
     @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
     .hero-content { position: relative; z-index: 10; text-align: center; max-width: 860px; margin: 0 auto; }
-    [dir="rtl"] .hero-content { text-align: right; }
+    [dir="rtl"] .hero-content { text-align: center; }
     .hero-badge { display: inline-block; padding: .3rem .9rem; border-radius: var(--radius-full); background: rgba(255,127,80,.1); color: var(--coral); font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,127,80,.2); margin-bottom: 1.5rem; animation: fadeUp .8s ease both; }
     .hero-h1 { font-size: clamp(2.2rem,6vw,4.5rem); font-weight: 800; color: var(--secondary-dark); margin-bottom: 1.5rem; line-height: 1.1; letter-spacing: -.02em; animation: fadeUp .8s .1s ease both; }
+    [dir="rtl"] .hero-h1 { font-size: clamp(1.8rem,5vw,3.5rem); letter-spacing: 0; }
+    [dir="rtl"] .hero-h1 .rebsam-logo { display: none; }
     .hero-h1 .rebsam-logo { font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: -.02em; }
     .hero-h1 .rebsam-logo .reb { color: var(--primary); }
     .hero-h1 .rebsam-logo .sam { color: var(--secondary-dark); }
     .hero-p { font-size: clamp(1.0625rem,2.2vw,1.375rem); color: rgba(45,55,72,.65); margin-bottom: 2.5rem; max-width: 640px; margin-left: auto; margin-right: auto; line-height: 1.7; animation: fadeUp .8s .2s ease both; }
     .hero-p strong { font-weight: 600; color: var(--secondary-dark); }
     .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; animation: fadeUp .8s .3s ease both; }
-    [dir="rtl"] .hero-btns { justify-content: flex-end; }
+    [dir="rtl"] .hero-btns { justify-content: center; }
     @media (max-width: 639px) { .hero-btns { flex-direction: column; align-items: stretch; } .hero-btns .btn { justify-content: center; } }
     .hero-card { position: relative; margin: 4rem auto 0; max-width: 600px; background: rgba(255,255,255,.85); border: 1px solid rgba(0,0,0,.08); border-radius: var(--radius-2xl); box-shadow: var(--shadow-2xl); backdrop-filter: blur(20px); overflow: hidden; animation: fadeUp .8s .5s ease both; }
     .hero-card-header { background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%); padding: .875rem 1.25rem; display: flex; align-items: center; gap: .75rem; }
@@ -253,7 +255,7 @@
     <div class="nav-right">
       <div class="lang-switcher">
         <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-        <button class="lang-btn" onclick="setLang('he')">עב</button>
+        <button class="lang-btn" onclick="setLang('he')">עברית</button>
         <button class="lang-btn" onclick="setLang('en')">EN</button>
       </div>
       <a href="#" class="nav-cta" onclick="openChat();return false;" data-i18n="nav_cta">Essayer RebSam</a>
@@ -274,7 +276,7 @@
   <a href="#" onclick="openChat();closeMobileMenu();return false;" class="btn-primary-mobile" data-i18n="nav_cta">Essayer RebSam</a>
   <div class="mobile-lang">
     <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-    <button class="lang-btn" onclick="setLang('he')">עב</button>
+    <button class="lang-btn" onclick="setLang('he')">עברית</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
 </div>
@@ -507,7 +509,7 @@ var T = {
   he: {
     nav_home:'דף הבית', nav_how:'איך זה עובד', nav_values:'הערכים שלנו', nav_cta:'נסה את RebSam',
     hero_badge:'מומחה הלכה · זמין בכל עת',
-    hero_tagline:' — בין בינה מלאכותית לבינה של תורה',
+    hero_tagline:'בין בינה מלאכותית לבינה של תורה',
     hero_sub1:'שאלות בעברית, צרפתית או אנגלית.',
     hero_sub2:'תשובות מדויקות היישר מהמקורות — תוך שניות.',
     hero_cta:'שאל את שאלתך הראשונה', hero_cta2:'גלה כיצד זה עובד',
@@ -613,7 +615,7 @@ function setLang(lang) {
   if (inp) inp.placeholder = t.chat_placeholder;
 
   // Lang buttons
-  var map = {fr:'FR', he:'עב', en:'EN'};
+  var map = {fr:'FR', he:'עברית', en:'EN'};
   document.querySelectorAll('.lang-btn').forEach(function(btn) {
     btn.classList.toggle('active', btn.textContent.trim() === map[lang]);
   });
