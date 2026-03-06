@@ -7,13 +7,20 @@
   <meta name="description" content="RebSam : votre expert en Halacha, disponible 24h/24. Posez vos questions en hébreu, français ou anglais. Réponses avec les sources exactes — en quelques secondes." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; color: #2D3748; background: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
-    [lang="he"], [dir="rtl"] { font-family: 'Assistant', 'Inter', sans-serif; }
+    [lang="he"], [dir="rtl"] { font-family: 'Heebo', sans-serif; }
+    [dir="rtl"] body { font-family: 'Frank Ruhl Libre', serif; }
+    [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4,
+    [dir="rtl"] .logo, [dir="rtl"] .hero-h1, [dir="rtl"] .msg-bubble,
+    [dir="rtl"] .nav-links a, [dir="rtl"] .btn, [dir="rtl"] .lang-btn,
+    [dir="rtl"] .chat-header, [dir="rtl"] .section-heading,
+    [dir="rtl"] .step-title, [dir="rtl"] .pillar-title, [dir="rtl"] .faq-question span,
+    [dir="rtl"] #chat-input, [dir="rtl"] .float-chat, [dir="rtl"] .float-wa { font-family: 'Heebo', sans-serif; }
     :root {
       --primary: #0056D2; --primary-dark: #003E99; --primary-light: #3B82F6;
       --secondary: #2D3748; --secondary-light: #4A5568; --secondary-dark: #1A202C;
@@ -81,8 +88,9 @@
     [dir="rtl"] .hero-content { text-align: center; }
     .hero-badge { display: inline-block; padding: .3rem .9rem; border-radius: var(--radius-full); background: rgba(255,127,80,.1); color: var(--coral); font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,127,80,.2); margin-bottom: 1.5rem; animation: fadeUp .8s ease both; }
     .hero-h1 { font-size: clamp(2.2rem,6vw,4.5rem); font-weight: 800; color: var(--secondary-dark); margin-bottom: 1.5rem; line-height: 1.1; letter-spacing: -.02em; animation: fadeUp .8s .1s ease both; }
-    [dir="rtl"] .hero-h1 { font-size: clamp(1.8rem,5vw,3.5rem); letter-spacing: 0; }
-    [dir="rtl"] .hero-h1 .rebsam-logo { display: none; }
+    [dir="rtl"] .hero-h1 { letter-spacing: 0; }
+    [dir="rtl"] .hero-h1 .rebsam-logo { display: block; font-size: clamp(3rem,8vw,6rem); font-weight: 900; margin-bottom: .5rem; }
+    [dir="rtl"] .hero-h1 [data-i18n="hero_tagline"] { display: block; font-family: 'Heebo', sans-serif; font-size: clamp(1.4rem,3.5vw,2.2rem); font-weight: 700; color: var(--secondary-dark); }
     .hero-h1 .rebsam-logo { font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: -.02em; }
     .hero-h1 .rebsam-logo .reb { color: var(--primary); }
     .hero-h1 .rebsam-logo .sam { color: var(--secondary-dark); }
