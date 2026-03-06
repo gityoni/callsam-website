@@ -64,7 +64,7 @@
     @media (max-width: 900px) { .nav-links { display: none; } .nav-cta { display: none; } .lang-switcher { display: none; } #hamburger { display: block; } }
 
     /* BUTTONS */
-    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: 1rem 2rem; border-radius: var(--radius-full); font-weight: 600; font-size: 1.0625rem; cursor: pointer; transition: all .25s; border: none; font-family: 'Inter', sans-serif; white-space: nowrap; }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 1.5rem; border-radius: var(--radius-full); font-weight: 600; font-size: .9375rem; cursor: pointer; transition: all .25s; border: none; font-family: 'Inter', sans-serif; white-space: nowrap; }
     .btn-primary { background: linear-gradient(135deg, var(--primary-pastel) 0%, var(--primary-pastel-dark) 100%); color: #fff; box-shadow: 0 4px 20px rgba(46,107,230,.3); }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,86,210,.45); }
     .btn-ghost { background: transparent; color: var(--secondary); border: 1.5px solid rgba(45,55,72,.2); }
@@ -73,7 +73,10 @@
     /* HERO */
     #hero { position: relative; padding: 10rem 0 8rem; overflow: hidden; }
     @media (max-width: 767px) { #hero { padding: 7rem 0 5rem; } }
-    .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,182,193,.15) 0%, rgba(219,234,254,.12) 50%, rgba(207,250,254,.15) 100%); z-index: -2; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #EEF2FF 0%, #F5F0FF 30%, #FFF1F2 60%, #FFF8F0 100%); z-index: -2; overflow: hidden; }
+    .hero-cloud-1 { position: absolute; top: -80px; left: -120px; width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(199,210,254,.55) 0%, rgba(224,231,255,.3) 40%, transparent 70%); filter: blur(60px); animation: floatA 18s ease-in-out infinite; }
+    .hero-cloud-2 { position: absolute; bottom: -100px; right: -80px; width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(252,231,243,.6) 0%, rgba(255,228,230,.35) 40%, transparent 70%); filter: blur(70px); animation: floatB 22s ease-in-out infinite; }
+    .hero-cloud-3 { position: absolute; top: 30%; left: 30%; width: 500px; height: 400px; background: radial-gradient(ellipse, rgba(255,237,213,.5) 0%, rgba(254,243,199,.25) 50%, transparent 70%); filter: blur(50px); animation: floatC 25s ease-in-out infinite; }
     .halo { position: absolute; border-radius: 50%; filter: blur(80px); }
     .halo-1 { top: -15%; right: -10%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,127,80,.10) 0%, rgba(252,231,243,.18) 40%, transparent 70%); opacity: .7; animation: floatA 14s ease-in-out infinite; }
     .halo-2 { bottom: -20%; left: -15%; width: 800px; height: 800px; background: radial-gradient(circle, rgba(186,230,255,.25) 0%, rgba(219,234,254,.18) 40%, transparent 70%); opacity: .6; animation: floatB 18s ease-in-out infinite; }
@@ -88,29 +91,30 @@
     @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
     .hero-content { position: relative; z-index: 10; text-align: center; max-width: 860px; margin: 0 auto; }
     [dir="rtl"] .hero-content { text-align: center; }
-    .hero-badge { display: inline-block; padding: .3rem .9rem; border-radius: var(--radius-full); background: rgba(255,127,80,.1); color: var(--coral); font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,127,80,.2); margin-bottom: 1.5rem; animation: fadeUp .8s ease both; }
-    .hero-h1 { font-size: clamp(2.2rem,6vw,4.5rem); font-weight: 800; color: var(--hero-text); margin-bottom: 1.5rem; line-height: 1.1; letter-spacing: -.02em; animation: fadeUp .8s .1s ease both; }
-    [dir="rtl"] .hero-h1 { letter-spacing: 0; }
-    [dir="rtl"] .hero-h1 .rebsam-logo { display: block; font-size: clamp(3rem,8vw,6rem); font-weight: 900; margin-bottom: .5rem; }
-    [dir="rtl"] .hero-h1 [data-i18n="hero_tagline"] { display: block; font-family: 'Heebo', sans-serif; font-size: clamp(1.4rem,3.5vw,2.2rem); font-weight: 700; color: var(--hero-text); }
-    .hero-h1 .rebsam-logo { font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: -.02em; }
+    .hero-badge { display: inline-block; padding: .35rem 1.1rem; border-radius: var(--radius-full); background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); color: #fff; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: none; margin-bottom: 1.5rem; animation: fadeUp .8s ease both; box-shadow: 0 2px 12px rgba(124,111,205,.25); }
+    .hero-h1 { margin-bottom: 1.25rem; animation: fadeUp .8s .1s ease both; line-height: 1; }
+    .hero-h1 .rebsam-logo { display: block; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: clamp(3.5rem,10vw,7rem); letter-spacing: -.03em; line-height: 1; margin-bottom: .5rem; }
     .hero-h1 .rebsam-logo .reb { color: var(--primary); }
     .hero-h1 .rebsam-logo .sam { color: var(--secondary-dark); }
-    .hero-p { font-size: clamp(1.0625rem,2.2vw,1.375rem); color: rgba(45,55,72,.65); margin-bottom: 2.5rem; max-width: 640px; margin-left: auto; margin-right: auto; line-height: 1.7; animation: fadeUp .8s .2s ease both; }
+    .hero-h1 [data-i18n="hero_tagline"] { display: block; font-size: clamp(1.5rem,3.5vw,2.5rem); font-weight: 700; color: var(--hero-text); letter-spacing: -.02em; line-height: 1.25; }
+    [dir="rtl"] .hero-h1 .rebsam-logo { font-size: clamp(3.5rem,10vw,7rem); }
+    [dir="rtl"] .hero-h1 [data-i18n="hero_tagline"] { font-family: 'Heebo', sans-serif; font-size: clamp(1.4rem,3.5vw,2.2rem); }
+    .hero-p { font-size: clamp(.9375rem,1.8vw,1.125rem); color: rgba(51,65,85,.6); margin-bottom: 2rem; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.7; animation: fadeUp .8s .2s ease both; }
+    .hero-sources { font-size: .78rem; color: rgba(100,116,139,.6); margin-top: 1.5rem; letter-spacing: .03em; animation: fadeUp .8s .45s ease both; }
     .hero-p strong { font-weight: 600; color: var(--hero-text); }
     .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; animation: fadeUp .8s .3s ease both; }
     [dir="rtl"] .hero-btns { justify-content: center; }
     @media (max-width: 639px) { .hero-btns { flex-direction: column; align-items: stretch; } .hero-btns .btn { justify-content: center; } }
-    .hero-card { position: relative; margin: 4rem auto 0; max-width: 600px; background: rgba(255,255,255,.85); border: 1px solid rgba(0,0,0,.08); border-radius: var(--radius-2xl); box-shadow: var(--shadow-2xl); backdrop-filter: blur(20px); overflow: hidden; animation: fadeUp .8s .5s ease both; }
-    .hero-card-header { background: linear-gradient(90deg, var(--primary-pastel) 0%, var(--primary-pastel-dark) 100%); padding: .875rem 1.25rem; display: flex; align-items: center; gap: .75rem; }
+    .hero-card { position: relative; margin: 3rem auto 0; max-width: 520px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.8); border-radius: var(--radius-2xl); box-shadow: 0 8px 40px rgba(99,102,241,.12), 0 2px 8px rgba(0,0,0,.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); overflow: hidden; animation: fadeUp .8s .5s ease both; }
+    .hero-card-header { background: linear-gradient(90deg, rgba(76,127,232,.85) 0%, rgba(37,87,200,.9) 100%); padding: .875rem 1.25rem; display: flex; align-items: center; gap: .75rem; backdrop-filter: blur(8px); }
     .hero-card-avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.05rem; color: #fff; }
     .hero-card-title { font-weight: 700; color: #fff; font-size: .9375rem; }
     .hero-card-sub { font-size: .75rem; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: .35rem; }
     .dot-green { width: .5rem; height: .5rem; border-radius: 50%; background: #4ade80; display: inline-block; }
-    .hero-card-body { padding: 1rem 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .75rem; }
+    .hero-card-body { padding: 1rem 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .75rem; background: rgba(255,255,255,.4); }
     .preview-bubble { padding: .75rem 1rem; border-radius: 1rem; font-size: .875rem; line-height: 1.55; max-width: 85%; }
-    .preview-sam { background: #f0f4ff; border: 1px solid rgba(0,86,210,.1); color: var(--secondary-dark); align-self: flex-start; border-top-left-radius: .2rem; }
-    .preview-user { background: linear-gradient(135deg, var(--primary-pastel), var(--primary-pastel-dark)); color: #fff; align-self: flex-end; border-top-right-radius: .2rem; }
+    .preview-sam { background: rgba(240,244,255,.75); border: 1px solid rgba(99,102,241,.12); color: var(--secondary-dark); align-self: flex-start; border-top-left-radius: .2rem; backdrop-filter: blur(8px); }
+    .preview-user { background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); color: #fff; align-self: flex-end; border-top-right-radius: .2rem; }
     .preview-typing { display: flex; align-items: center; gap: .35rem; padding: .75rem 1rem; }
     .typing-dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--primary); opacity: .6; animation: typingBounce 1.2s ease-in-out infinite; }
     .typing-dot:nth-child(2){animation-delay:.2s;} .typing-dot:nth-child(3){animation-delay:.4s;}
@@ -122,7 +126,7 @@
     [dir="rtl"] .section-heading { text-align: right; }
     .section-heading h2 { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 800; color: var(--secondary-dark); margin-bottom: .75rem; }
     .section-heading p { font-size: 1.0625rem; color: rgba(45,55,72,.65); max-width: 560px; margin: 0 auto; line-height: 1.65; }
-    .section-eyebrow { display: inline-block; padding: .25rem .875rem; border-radius: var(--radius-full); background: rgba(0,86,210,.07); color: var(--primary); font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; border: 1px solid rgba(0,86,210,.15); }
+    .section-eyebrow { display: inline-block; padding: .28rem .95rem; border-radius: var(--radius-full); background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); color: #fff; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; border: none; box-shadow: 0 2px 10px rgba(124,111,205,.2); }
 
     /* HOW IT WORKS */
     #how-it-works { padding: 6rem 0; background: var(--bg-soft); position: relative; overflow: hidden; }
@@ -293,7 +297,7 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg"><div class="halo halo-1"></div><div class="halo halo-2"></div><div class="halo halo-3"></div><div class="blob-1"></div><div class="blob-2"></div></div>
+  <div class="hero-bg"><div class="hero-cloud-1"></div><div class="hero-cloud-2"></div><div class="hero-cloud-3"></div></div>
   <div class="container">
     <div class="hero-content">
       <span class="hero-badge" data-i18n="hero_badge">Votre expert en Halacha, disponible 24h/24</span>
@@ -314,6 +318,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
+      <p class="hero-sources">Choulhan Aroukh · Michna Beroura · Yalkout Yossef · Igrot Moshé</p>
       <div class="hero-card">
         <div class="hero-card-header">
           <div class="hero-card-avatar font-logo">RS</div>
@@ -484,7 +489,7 @@ var T = {
   fr: {
     nav_home:'Accueil', nav_how:'Comment ça marche', nav_values:'Nos Valeurs', nav_cta:'Essayer RebSam',
     hero_badge:'Votre expert en Halacha, disponible 24h/24',
-    hero_tagline:' : Un Rebbe dans votre dose d\'IA quotidienne.',
+    hero_tagline:'Un Rebbe dans votre dose d\'IA quotidienne.',
     hero_sub1:'Posez vos questions en hébreu, français ou anglais.',
     hero_sub2:'RebSam répond avec les sources exactes — en quelques secondes.',
     hero_cta:'Pose ta première question à RebSam', hero_cta2:'Découvrir comment ça marche',
@@ -554,7 +559,7 @@ var T = {
   en: {
     nav_home:'Home', nav_how:'How It Works', nav_values:'Our Values', nav_cta:'Try RebSam',
     hero_badge:'Halacha Expert · Available 24/7',
-    hero_tagline:': A Rebbe in your daily dose of AI.',
+    hero_tagline:'A Rebbe in your daily dose of AI.',
     hero_sub1:'Ask your questions in Hebrew, French, or English.',
     hero_sub2:'RebSam answers with exact sources — in seconds.',
     hero_cta:'Ask your first question here', hero_cta2:'Discover how it works',
