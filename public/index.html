@@ -720,6 +720,8 @@ function addLoadingMessage(){
   return bubble;
 }
 
+var chatHistory = [];
+
 async function sendMessage(){
   var inputEl=document.getElementById('chat-input');
   var sendBtn=document.getElementById('chat-send');
@@ -727,11 +729,17 @@ async function sendMessage(){
   if(!question)return;
   inputEl.value=''; inputEl.disabled=true; sendBtn.disabled=true;
   addMessage('user',question,false);
+  chatHistory.push({role:'user', content:question});
   var loadingBubble=addLoadingMessage();
   var t=T[currentLang];
   try{
-    var res=await fetch('https://hook.eu1.make.com/r1woeelogkk0bv2i6s5cxu3mli231nbg?prompt='+encodeURIComponent(question));
+    var res=await fetch('https://rebsam-proxy-217121855341.europe-west1.run.app',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-secret-token':'rebsam-make-2026'},
+      body:JSON.stringify({prompt:question, history:chatHistory.slice(-10)})
+    });
     var raw=await res.text();
+    chatHistory.push({role:'assistant', content:raw});
     loadingBubble.innerHTML=parseMarkdown(raw);
     loadingBubble.style.whiteSpace='normal';
   }catch(err){
