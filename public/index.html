@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RebSam — Un Rebbe dans votre dose d'IA quotidienne</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60'%3E%3Ctext y='52' font-family='Arial Black,sans-serif' font-weight='900' font-size='58'%3E%3Ctspan fill='%232E6BE6'%3EReb%3C/tspan%3E%3Ctspan fill='%231E293B'%3ESam%3C/tspan%3E%3C/text%3E%3C/svg%3E">
   <meta name="description" content="RebSam : votre expert en Halacha, disponible 24h/24. Posez vos questions en hébreu, français ou anglais. Réponses avec les sources exactes — en quelques secondes." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -91,24 +92,24 @@
     @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
     .hero-content { position: relative; z-index: 10; text-align: center; max-width: 860px; margin: 0 auto; }
     [dir="rtl"] .hero-content { text-align: center; }
-    .hero-badge { display: inline-block; padding: .35rem 1.1rem; border-radius: var(--radius-full); background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); color: #fff; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: none; margin-bottom: 1.5rem; animation: fadeUp .8s ease both; box-shadow: 0 2px 12px rgba(124,111,205,.25); }
-    .hero-h1 { margin-bottom: 1.25rem; animation: fadeUp .8s .1s ease both; line-height: 1; }
+    .hero-badge { display: inline-block; padding: .35rem 1.1rem; border-radius: var(--radius-full); background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); color: #fff; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: none; margin-bottom: 1.5rem; animation: fadeUp .6s ease both; box-shadow: 0 2px 12px rgba(124,111,205,.25); }
+    .hero-h1 { margin-bottom: 1.25rem; animation: fadeUp .6s .08s ease both; line-height: 1; }
     .hero-h1 .rebsam-logo { display: block; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: clamp(3.5rem,10vw,7rem); letter-spacing: -.03em; line-height: 1; margin-bottom: .5rem; }
     .hero-h1 .rebsam-logo .reb { color: var(--primary); }
     .hero-h1 .rebsam-logo .sam { color: var(--secondary-dark); }
     .hero-h1 [data-i18n="hero_tagline"] { display: block; font-size: clamp(1.5rem,3.5vw,2.5rem); font-weight: 700; color: var(--hero-text); letter-spacing: -.02em; line-height: 1.25; }
     [dir="rtl"] .hero-h1 .rebsam-logo { font-size: clamp(3.5rem,10vw,7rem); }
     [dir="rtl"] .hero-h1 [data-i18n="hero_tagline"] { font-family: 'Heebo', sans-serif; font-size: clamp(1.4rem,3.5vw,2.2rem); }
-    .hero-p { font-size: clamp(.9375rem,1.8vw,1.125rem); color: rgba(51,65,85,.6); margin-bottom: 2rem; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.7; animation: fadeUp .8s .2s ease both; }
-    .hero-sources { font-size: .78rem; color: rgba(100,116,139,.6); margin-top: 1.5rem; letter-spacing: .03em; animation: fadeUp .8s .45s ease both; }
-    .hero-avatar-wrap { position: relative; margin: 1.5rem auto 2.5rem; max-width: 320px; animation: fadeUp .8s .5s ease both; }
+    .hero-p { font-size: clamp(.9375rem,1.8vw,1.125rem); color: rgba(51,65,85,.6); margin-bottom: 2rem; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.7; animation: fadeUp .6s .15s ease both; }
+    .hero-sources { font-size: .78rem; color: rgba(100,116,139,.6); margin-top: 1.5rem; letter-spacing: .03em; animation: fadeUp .6s .22s ease both; }
+    .hero-avatar-wrap { position: relative; margin: 1.5rem auto 2.5rem; max-width: 320px; animation: fadeUp .6s .25s ease both; }
     .hero-avatar-img { width: 100%; max-width: 280px; display: block; margin: 0 auto; filter: drop-shadow(0 12px 30px rgba(91,142,240,.22)) drop-shadow(0 4px 12px rgba(0,0,0,.12)); border-radius: 1.25rem; }
     .hero-avatar-cta { margin-top: 1.25rem; display: flex; justify-content: center; }
     .hero-avatar-btn { background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); box-shadow: 0 6px 24px rgba(124,111,205,.35); font-size: .875rem; padding: .7rem 1.5rem; }
     .hero-avatar-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(124,111,205,.5); }
     @media (max-width: 640px) { .hero-avatar-img { max-width: 220px; } }
     .hero-p strong { font-weight: 600; color: var(--hero-text); }
-    .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; animation: fadeUp .8s .3s ease both; }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; animation: fadeUp .6s .18s ease both; }
     [dir="rtl"] .hero-btns { justify-content: center; }
     @media (max-width: 639px) { .hero-btns { flex-direction: column; align-items: stretch; } .hero-btns .btn { justify-content: center; } }
     .hero-card { position: relative; margin: 3rem auto 0; max-width: 520px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.8); border-radius: var(--radius-2xl); box-shadow: 0 8px 40px rgba(99,102,241,.12), 0 2px 8px rgba(0,0,0,.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); overflow: hidden; animation: fadeUp .8s .5s ease both; }
@@ -197,7 +198,8 @@
 
     /* FLOATING BUTTONS */
     .float-btn { position: fixed; bottom: 1.5rem; z-index: 300; border: none; cursor: pointer; background: none; padding: 0; }
-    #btn-chat { left: 1.5rem; } #btn-wa { right: 1.5rem; }
+    #btn-chat { left: max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem)); }
+    #btn-wa   { right: max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem)); }
     .float-inner { position: relative; display: inline-flex; align-items: center; gap: .75rem; padding: .75rem 1.5rem; border-radius: var(--radius-full); font-family: 'Inter', sans-serif; font-weight: 600; font-size: .9375rem; color: #fff; transition: transform .3s; }
     .float-inner:hover { transform: scale(1.05); }
     .float-glow { position: absolute; inset: 0; border-radius: var(--radius-full); filter: blur(12px); opacity: .5; animation: pulse 2s ease-in-out infinite; }
@@ -441,7 +443,7 @@
       <div class="footer-col">
         <h4 data-i18n="footer_contact">Contact</h4>
         <ul>
-          <li><div class="footer-contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:rebbesam@callsam.net">rebbesam@callsam.net</a></div></li>
+          <li><div class="footer-contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="/cdn-cgi/l/email-protection#0d7f686f6f687e6c604d6e6c61617e6c6023636879"><span class="__cf_email__" data-cfemail="7c0e191e1e190f1d113c1f1d10100f1d1152121908">[email&#160;protected]</span></a></div></li>
           <li><div class="footer-contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Jérusalem, Israël</span></div></li>
           <li style="font-size:.8125rem;color:rgba(45,55,72,.45);padding-top:.5rem;" data-i18n="footer_support">Support : Réponse sous 24h</li>
         </ul>
@@ -494,7 +496,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════ TRANSLATIONS ═══════════════ */
 var T = {
   fr: {
@@ -693,6 +695,10 @@ function parseMarkdown(text) {
 }
 
 /* ═══════════════ SCROLL / MENU ═══════════════ */
+/* Ensure page always starts at the top */
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 window.addEventListener('scroll',function(){document.getElementById('header').classList.toggle('scrolled',window.scrollY>20);});
 var menuOpen=false;
 document.getElementById('hamburger').addEventListener('click',function(){
@@ -814,13 +820,4 @@ document.querySelectorAll('a[href^="#"]').forEach(function(link){
     var href=this.getAttribute('href');
     if(href==='#')return;
     var target=document.querySelector(href);
-    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
-  });
-});
-
-/* ═══════════════ INIT ═══════════════ */
-document.getElementById('year').textContent=new Date().getFullYear();
-setLang('fr');
-</script>
-</body>
-</html>
+    if(target){e.preventDefault();target.scrollIntoView({be
