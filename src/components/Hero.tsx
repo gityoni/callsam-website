@@ -81,8 +81,7 @@ export default function Hero() {
               <span className="font-logo font-black text-primary" style={{ letterSpacing: '-0.02em' }}>Reb<span className="text-primary">Sam</span></span> : Un Rebbe dans votre dose d&apos;IA quotidienne.
             </h1>
             <p className="text-xl md:text-2xl text-secondary/70 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Posez vos questions en hébreu, français ou anglais.<br />
-              <span className="font-semibold text-secondary-dark">RebSam répond avec les sources exactes — en quelques secondes.</span>
+              <span className="font-semibold text-secondary-dark">RebSam est la seule IA juive conçue pour ne jamais inventer — chaque réponse est ancrée dans des sources vérifiées, citées avec précision.</span>
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -98,7 +97,7 @@ export default function Hero() {
                 href="#how-it-works"
                 className="w-full sm:w-auto text-lg px-8 py-4 group"
               >
-                Découvrir comment ça marche
+                Découvrez comment RebSam est la seule IA juive
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
