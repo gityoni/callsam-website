@@ -40,7 +40,9 @@ export default function Layout({ children }: LayoutProps) {
       const id = path.substring(2);
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const headerHeight = 80;
+        const top = element.getBoundingClientRect().top + window.scrollY - headerHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
       }
     }
   };
