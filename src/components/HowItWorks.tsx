@@ -1,25 +1,26 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, Search, FileText } from 'lucide-react';
 import { SectionHeading } from './UI';
+import React from 'react';
 
 export default function HowItWorks() {
   const steps = [
     {
       icon: MessageCircle,
       title: "1. Tu poses ta question",
-      description: "Écris simplement, comme tu parlerais à un ami. Pas besoin de connaître les termes techniques — RebSam te comprend.",
+      description: <><strong>Écris simplement, comme tu parlerais à un ami.</strong> Pas besoin de connaître les termes techniques — RebSam te comprend, en hébreu, français ou anglais.</>,
       color: "bg-blue-50 text-blue-600"
     },
     {
       icon: Search,
       title: "2. RebSam cherche pour toi",
-      description: "En quelques secondes, il explore des milliers de pages de textes sacrés validés pour trouver la réponse la plus précise.",
+      description: <><strong>En quelques secondes, il explore des milliers de pages de textes sacrés validés</strong> pour trouver la réponse la plus précise — sans jamais inventer.</>,
       color: "bg-indigo-50 text-indigo-600"
     },
     {
       icon: FileText,
       title: "3. Ta réponse arrive",
-      description: "Tu reçois une réponse claire et chaleureuse, avec le Siman et le Seif exacts — pour que tu puisses vérifier toi-même.",
+      description: <>Tu reçois une réponse claire et chaleureuse, avec <strong>le Siman et le Seif exacts</strong> — pour que tu puisses vérifier toi-même.</>,
       color: "bg-cyan-50 text-cyan-600"
     }
   ];
@@ -38,6 +39,9 @@ export default function HowItWorks() {
           title="Comment ça marche ?" 
           subtitle="Une technologie de pointe au service de la tradition millénaire, en toute simplicité."
         />
+        <p className="text-center text-lg text-secondary/70 mt-2 mb-4">
+          Posez vos questions en <strong>hébreu, français ou anglais</strong>.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 relative">
           {/* Intensified Large Soft Glow Behind Cards - Hero Reference */}
@@ -63,7 +67,7 @@ export default function HowItWorks() {
                 <step.icon size={36} strokeWidth={1.5} />
               </div>
               <h3 className="text-xl font-bold mb-3 text-primary">{step.title}</h3>
-              <p className="text-secondary/80 leading-relaxed max-w-xs">{step.description}</p>
+              <p className="text-secondary/80 leading-relaxed max-w-xs">{step.description as React.ReactNode}</p>
             </motion.div>
           ))}
         </div>
