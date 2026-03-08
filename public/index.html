@@ -55,13 +55,42 @@
     .nav-cta { display: inline-flex; align-items: center; gap: .4rem; background: var(--primary); color: #fff; padding: .5rem 1.25rem; border-radius: var(--radius-full); font-size: .875rem; font-weight: 600; transition: background .25s, transform .2s; white-space: nowrap; }
     .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .nav-right { display: flex; align-items: center; gap: .75rem; }
-    #hamburger { display: none; background: none; border: none; cursor: pointer; padding: .5rem; color: var(--secondary); }
-    #mobile-menu { display: none; position: fixed; inset: 0; z-index: 400; background: #fff; padding: 6rem 2rem 2rem; flex-direction: column; gap: 2rem; }
-    #mobile-menu.open { display: flex; }
-    #mobile-menu a { font-size: 1.25rem; font-weight: 500; color: var(--secondary); transition: color .25s; }
-    #mobile-menu a:hover { color: var(--primary); }
-    .btn-primary-mobile { display: block; text-align: center; background: var(--primary); color: #fff !important; padding: .875rem 1.5rem; border-radius: var(--radius-full); font-weight: 600; font-size: 1.125rem; }
-    .mobile-lang { display: flex; gap: .5rem; }
+    /* ── BURGER BUTTON ── */
+    #hamburger { display: none; background: none; border: none; cursor: pointer; padding: .45rem; color: var(--secondary); border-radius: .5rem; transition: background .2s; }
+    #hamburger:hover { background: rgba(46,107,230,.07); }
+    .burger-box { width: 24px; height: 18px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .burger-line { display: block; height: 2.5px; border-radius: 2px; background: var(--secondary-dark); transform-origin: center; transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .25s, top .3s; position: absolute; left: 0; width: 100%; }
+    .burger-line:nth-child(1) { top: 0; }
+    .burger-line:nth-child(2) { top: 50%; transform: translateY(-50%); }
+    .burger-line:nth-child(3) { top: 100%; transform: translateY(-100%); }
+    #hamburger.open .burger-line:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+    #hamburger.open .burger-line:nth-child(2) { opacity: 0; transform: translateY(-50%) scaleX(0); }
+    #hamburger.open .burger-line:nth-child(3) { top: 50%; transform: translateY(-50%) rotate(-45deg); }
+
+    /* ── MOBILE MENU SLIDE-DOWN ── */
+    #mobile-menu {
+      display: block; position: fixed; top: 0; left: 0; right: 0; z-index: 400;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      padding: 5rem 1.75rem 2rem; box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      transform: translateY(-110%); opacity: 0;
+      transition: transform .4s cubic-bezier(.4,0,.2,1), opacity .35s ease;
+      border-bottom: 1px solid rgba(46,107,230,.1);
+    }
+    #mobile-menu.open { transform: translateY(0); opacity: 1; }
+    .mobile-nav-links { display: flex; flex-direction: column; gap: .25rem; margin-bottom: 1.25rem; }
+    #mobile-menu .mob-link {
+      display: flex; align-items: center; gap: .65rem;
+      font-size: 1.0625rem; font-weight: 500; color: var(--secondary-dark);
+      padding: .8rem 1rem; border-radius: .75rem;
+      transition: background .2s, color .2s, transform .2s;
+      text-decoration: none;
+    }
+    #mobile-menu .mob-link:hover { background: rgba(46,107,230,.07); color: var(--primary); transform: translateX(4px); }
+    #mobile-menu .mob-link .mob-icon { width: 1.75rem; height: 1.75rem; border-radius: .5rem; background: rgba(46,107,230,.08); display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; }
+    .mobile-divider { height: 1px; background: rgba(0,0,0,.06); margin: .75rem 0; }
+    .btn-primary-mobile { display: flex; align-items: center; justify-content: center; gap: .5rem; background: linear-gradient(135deg, var(--primary-pastel) 0%, var(--primary-pastel-dark) 100%); color: #fff !important; padding: .875rem 1.5rem; border-radius: var(--radius-full); font-weight: 600; font-size: 1rem; box-shadow: 0 4px 18px rgba(46,107,230,.3); transition: transform .2s, box-shadow .2s; margin-bottom: 1rem; }
+    .btn-primary-mobile:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(46,107,230,.4); }
+    .mobile-lang { display: flex; gap: .5rem; justify-content: center; }
     @media (max-width: 900px) { .nav-links { display: none; } .nav-cta { display: none; } .lang-switcher { display: none; } #hamburger { display: block; } }
 
     /* BUTTONS */
@@ -139,6 +168,7 @@
     .section-heading h2 { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 800; color: var(--secondary-dark); margin-bottom: .75rem; }
     .section-heading p { font-size: 1.0625rem; color: rgba(45,55,72,.65); max-width: 560px; margin: 0 auto; line-height: 1.65; }
     .section-eyebrow { display: inline-block; padding: .28rem .95rem; border-radius: var(--radius-full); background: linear-gradient(135deg, #5B8EF0 0%, #7C6FCD 50%, #E07B5A 100%); color: #fff; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; border: none; box-shadow: 0 2px 10px rgba(124,111,205,.2); }
+    #faq .section-eyebrow { background: none; color: var(--primary); box-shadow: none; font-size: .8rem; letter-spacing: .1em; font-weight: 700; padding: 0; }
 
     /* HOW IT WORKS */
     #how-it-works { padding: 6rem 0; background: rgba(255,255,255,.45); position: relative; overflow: hidden; }
@@ -148,8 +178,10 @@
     @media (max-width: 767px) { .steps-grid::before { display: none; } }
     .step-item { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; animation: fadeUp .6s ease both; }
     [dir="rtl"] .step-item { text-align: right; align-items: flex-end; }
-    .step-icon { width: 6rem; height: 6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); border: 4px solid #fff; transition: transform .3s, box-shadow .3s; }
-    .step-item:hover .step-icon { transform: scale(1.1); box-shadow: var(--shadow-lg); }
+    .step-icon { width: 6rem; height: 6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); border: 4px solid #fff; transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .3s, background .3s; }
+    .step-item:hover .step-icon { transform: scale(1.12) rotate(-4deg); box-shadow: 0 12px 36px rgba(46,107,230,.2); }
+    .step-item:hover .step-title { color: var(--primary-dark); }
+    .step-title { transition: color .25s; }
     .step-icon-blue { background: #eff6ff; color: #2563eb; }
     .step-icon-indigo { background: #eef2ff; color: #4f46e5; }
     .step-icon-cyan { background: #ecfeff; color: #0891b2; }
@@ -164,8 +196,12 @@
     .pillars-glow::before,.pillars-glow::after { content: ''; position: absolute; border-radius: 50%; filter: blur(140px); }
     .pillars-glow::before { top: -30%; left: 5%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,127,80,.28) 0%, rgba(252,231,243,.35) 40%, transparent 70%); opacity: .8; }
     .pillars-glow::after { bottom: -25%; right: 0; width: 800px; height: 800px; background: radial-gradient(circle, rgba(186,230,255,.38) 0%, rgba(237,233,254,.35) 40%, transparent 70%); opacity: .75; }
-    .feature-card { position: relative; z-index: 1; background: rgba(255,255,255,.85); border: 1px solid rgba(0,0,0,.07); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-sm); transition: transform .3s, box-shadow .3s; backdrop-filter: blur(8px); }
-    .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .feature-card { position: relative; z-index: 1; background: rgba(255,255,255,.88); border: 1px solid rgba(0,0,0,.07); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-sm); transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, border-color .3s; backdrop-filter: blur(8px); }
+    .feature-card::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-xl); background: linear-gradient(135deg, rgba(46,107,230,.04) 0%, rgba(124,111,205,.04) 100%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .feature-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 50px rgba(46,107,230,.16), 0 6px 16px rgba(0,0,0,.08); border-color: rgba(46,107,230,.18); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card:hover .feature-card-icon { background: rgba(46,107,230,.14); transform: scale(1.1) rotate(-3deg); }
+    .feature-card-icon { transition: background .3s, transform .35s cubic-bezier(.4,0,.2,1); }
 
     .feature-card-icon-img { width:100%; margin-bottom:1.25rem; overflow:hidden; border-radius:.75rem; }
     .feature-card-icon { width: 3.5rem; height: 3.5rem; border-radius: .875rem; background: rgba(0,86,210,.08); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--primary); }
@@ -173,10 +209,12 @@
     .feature-card p { font-size: .9375rem; color: rgba(45,55,72,.72); line-height: 1.65; }
 
     /* FAQ */
-    #faq { padding: 6rem 0; background: rgba(255,255,255,.25); position: relative; overflow: hidden; }
-    .faq-list { max-width: 760px; margin: 0 auto; background: #fff; border-radius: var(--radius-2xl); box-shadow: var(--shadow-md); overflow: hidden; }
-    .faq-item { border-bottom: 1px solid #f3f4f6; }
-    .faq-item:last-child { border-bottom: none; }
+    #faq { padding: 6rem 0; background: linear-gradient(160deg, #eef3fb 0%, #f3f6fd 50%, #edf2fa 100%); position: relative; overflow: hidden; }
+    #faq .section-heading h2 { color: var(--secondary-dark) !important; }
+    #faq .section-heading p { color: rgba(45,55,72,.65) !important; }
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: .75rem; }
+    .faq-item { background: #fff; border: 1px solid rgba(46,107,230,.1); border-radius: var(--radius-xl); overflow: hidden; transition: box-shadow .25s, border-color .25s; }
+    .faq-item:hover { box-shadow: 0 6px 24px rgba(46,107,230,.1); border-color: rgba(46,107,230,.22); }
     .faq-question { width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 1.5rem 2rem; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; font-size: 1.0625rem; font-weight: 500; color: var(--secondary-dark); transition: color .25s; gap: 1rem; }
     [dir="rtl"] .faq-question { text-align: right; flex-direction: row-reverse; }
     .faq-question:hover,.faq-question.open { color: var(--primary); }
@@ -289,20 +327,41 @@
       </div>
       <a href="#" class="nav-cta" onclick="openChat();return false;" data-i18n="nav_cta">Essayer RebSam</a>
     </div>
-    <button id="hamburger" aria-label="Menu">
-      <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      <svg id="icon-close-menu" style="display:none;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <button id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span class="burger-box">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </span>
     </button>
   </div>
 </div>
 
 <!-- Mobile Menu -->
-<div id="mobile-menu">
-  <a href="#" onclick="closeMobileMenu()" data-i18n="nav_home">Accueil</a>
-  <a href="#how-it-works" onclick="closeMobileMenu()" data-i18n="nav_how">Comment ça marche</a>
-  <a href="#pillars" onclick="closeMobileMenu()" data-i18n="nav_values">Nos Valeurs</a>
-  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
-  <a href="#" onclick="openChat();closeMobileMenu();return false;" class="btn-primary-mobile" data-i18n="nav_cta">Essayer RebSam</a>
+<div id="mobile-menu" role="navigation" aria-label="Menu mobile">
+  <div class="mobile-nav-links">
+    <a href="#" class="mob-link" onclick="closeMobileMenu()" data-i18n="nav_home">
+      <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+      Accueil
+    </a>
+    <a href="#how-it-works" class="mob-link" onclick="closeMobileMenu()" data-i18n="nav_how">
+      <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+      Comment ça marche
+    </a>
+    <a href="#pillars" class="mob-link" onclick="closeMobileMenu()" data-i18n="nav_values">
+      <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+      Nos Valeurs
+    </a>
+    <a href="#faq" class="mob-link" onclick="closeMobileMenu()">
+      <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      FAQ
+    </a>
+  </div>
+  <div class="mobile-divider"></div>
+  <a href="#" onclick="openChat();closeMobileMenu();return false;" class="btn-primary-mobile" data-i18n="nav_cta">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Essayer RebSam
+  </a>
   <div class="mobile-lang">
     <button class="lang-btn active" onclick="setLang('fr')">FR</button>
     <button class="lang-btn" onclick="setLang('he')">עברית</button>
@@ -432,7 +491,6 @@
 
 <!-- FAQ -->
 <section id="faq">
-  <div class="hero-bg" style="position:absolute;inset:0;z-index:0;opacity:.5;"></div>
   <div class="container" style="position:relative;z-index:1;">
     <div class="section-heading">
       <span class="section-eyebrow" data-i18n="faq_eyebrow">Questions fréquentes</span>
@@ -734,13 +792,27 @@ window.scrollTo(0, 0);
 
 window.addEventListener('scroll',function(){document.getElementById('header').classList.toggle('scrolled',window.scrollY>20);});
 var menuOpen=false;
-document.getElementById('hamburger').addEventListener('click',function(){
+var hamburgerBtn=document.getElementById('hamburger');
+hamburgerBtn.addEventListener('click',function(){
   menuOpen=!menuOpen;
+  hamburgerBtn.classList.toggle('open',menuOpen);
+  hamburgerBtn.setAttribute('aria-expanded',menuOpen);
   document.getElementById('mobile-menu').classList.toggle('open',menuOpen);
-  document.getElementById('icon-menu').style.display=menuOpen?'none':'block';
-  document.getElementById('icon-close-menu').style.display=menuOpen?'block':'none';
+  document.body.style.overflow=menuOpen?'hidden':'';
 });
-function closeMobileMenu(){menuOpen=false;document.getElementById('mobile-menu').classList.remove('open');document.getElementById('icon-menu').style.display='block';document.getElementById('icon-close-menu').style.display='none';}
+function closeMobileMenu(){
+  menuOpen=false;
+  hamburgerBtn.classList.remove('open');
+  hamburgerBtn.setAttribute('aria-expanded','false');
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.body.style.overflow='';
+}
+// Close on outside click
+document.addEventListener('click',function(e){
+  if(menuOpen && !document.getElementById('mobile-menu').contains(e.target) && !hamburgerBtn.contains(e.target)){closeMobileMenu();}
+});
+// Close on resize to desktop
+window.addEventListener('resize',function(){if(window.innerWidth>900&&menuOpen)closeMobileMenu();});
 
 /* ═══════════════ FAQ ═══════════════ */
 function toggleFaq(btn){
